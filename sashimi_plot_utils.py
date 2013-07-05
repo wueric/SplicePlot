@@ -411,7 +411,7 @@ if __name__ == '__main__':
     average_depths_dict = pickle.load(open('/Users/EricWu/Documents/Research/2013/splice_plot/download_tarball/genotype_averages_pickled.p','rb'))
 
     for key in average_depths_dict:
-        average_depths_dict[key] = average_depths_dict[key].filter_junctions_dict_for_event('chr10:90768754-90770296,chr10:90767594-90770296,chr10:90762951-90770296')
+        average_depths_dict[key] = average_depths_dict[key].filter_junctions_dict_for_event('chr1:17055-17915,chr1:17055-17606,chr1:17055-17233')
 
     mRNAs_object = pickle.load(open('/Users/EricWu/Documents/Research/2013/splice_plot/download_tarball/possible_mRNAs.p','rb'))
 

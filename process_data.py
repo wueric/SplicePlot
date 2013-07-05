@@ -589,14 +589,14 @@ def create_data_frame(read_depth_dict,junction_name,var_pos,genotype_lookup_dict
 if __name__ == '__main__':
     
     bam_to_id_dict, bam_list = map_indiv_id_to_bam_name('/home/wueric/bam/map_file.txt')
-    read_depths_dict, mRNA_info_object = initialize_read_depths_and_determine_exons('chr10:90768754-90770296,chr10:90767594-90770296,chr10:90762951-90770296','/home/wueric/no_duplicates.unzip.exons.gencode.v17.annotation.gtf.gz',bam_list,bam_to_id_dict)
+    read_depths_dict, mRNA_info_object = initialize_read_depths_and_determine_exons('chr1:17055-17915,chr1:17055-17606,chr1:17055-17233','/home/wueric/no_duplicates.unzip.exons.gencode.v17.annotation.gtf.gz',bam_list,bam_to_id_dict)
     print read_depths_dict
     print mRNA_info_object
 
     genotype_averages_dict, genotype_by_id = average_read_depth_by_genotype(read_depths_dict,'/home/wueric/bam/sample.vcf.gz','chr1:10583')
 
 
-    df = create_data_frame(read_depths_dict,'chr10:90768754-90770296,chr10:90767594-90770296,chr10:90762951-90770296','chr1:10583',genotype_by_id)
+    df = create_data_frame(read_depths_dict,'chr1:17055-17915,chr1:17055-17606,chr1:17055-17233','chr1:10583',genotype_by_id)
     print df.to_string()
 
     pickle.dump(read_depths_dict,open('read_depths_dict.p','wb'))
@@ -604,5 +604,4 @@ if __name__ == '__main__':
     pickle.dump(df,open('df_pickled.p','wb'))
     pickle.dump(genotype_averages_dict,open('genotype_averages_pickled.p','wb'))
 
-    print ReadDepth.determine_depth('/home/xli6/2012_ceufam/tophat/bam/NA12878_2ndr.bam','chr10',90762951,90770296)
-
+    print ReadDepth.determine_depth('/home/xli6/2012_ceufam/tophat/bam/NA12878_2ndr.bam','chr1',10000,20000)
