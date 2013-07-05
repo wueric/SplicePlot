@@ -1,0 +1,178 @@
+# data source
+[data]
+
+bam_file_paths = '/home/wueric/bam/bam_list.txt'
+vcf_file_path = '/home/wueric/bam/sample.vcf.gz'
+id_mapping_file = '/home/wueric/bam/mapping.txt'
+annotation_file_path = '/home/wueric/bam/annotation.gtf.gz'
+data = '/Users/EricWu/Documents/Research/2013/hive_plot/sample1/sample_data'
+
+
+
+
+
+
+# settings for drawing hive plot
+[hive_plot]
+
+# basic settings
+draw_hive_plot = True
+# size of the plot
+dimension = 800
+# output file path
+output_file_path='hive.svg'
+
+# tick mark settings
+# boolean determining whether tick marks are drawn
+tick_marks = True
+
+# font size of the tick labels. Set to 0 if you do not want tick labels
+tick_label_font_size = 10
+
+# distance of the tick labels from the axis
+tick_label_distance = 15
+
+# height of each tick
+tick_height = 8
+
+# thickness (weight) of each tick
+tick_thickness = 1
+
+# axis settings
+# start radius of axis. Measured from the center of the plot
+axis_start_radius = 30
+
+
+# end radius of axis. Measured from the center of the plot
+axis_end_radius = 300
+
+# 3-element list containing the RGB values of the axis color
+axis_colors = [0,0,0]
+
+
+# list containing the radii for each of the axis labels, measured from center of the plot
+axis_label_radius = [350,350,350]
+
+# determines the font size of the axis labels
+axis_label_size = 15
+
+# determines the thickness of the axes
+axis_thickness = 5
+
+# determines the size of the subdivisions of the axis for tick marks
+axis_subdivision = 0.25
+
+# list containing the angles of each axis, in degrees. 0 is 3 o'clock
+axis_angles = [90,210,330]
+
+# list containing lists which determine the lower and upper bounds for each axis
+# set to [] if you do not want to use a custom scale
+custom_scale = [[0,1],[0,1],[0,1]]
+
+# bezier curve settings
+# list containing lists determining the RGB values of the beziers
+bezier_colors = [[255,128,0],[0,200,102],[51,153,255]]
+
+# determines the thickness of the beziers
+bezier_thickness = 0.5
+
+# key settings
+# boolean determining whether a key should be drawn
+include_key = True
+
+# determines the font size of the key title
+key_title_size = 20
+
+# 2-element list containing the cartesian coordinates of the key. (0,0) is the center of the plot
+key_position = [100,200]
+
+# determines the font size of the text in the key
+key_font_size = 15
+
+# 3-element list determining the color of the text in the key
+key_text_color = [0,0,0]
+
+
+
+
+
+
+# settings for structure plot
+[struct_plot]
+
+# basic settings
+draw_struct_plot = True
+output_file_path='structure.svg'
+
+# dimensions
+plot_width=1000
+plot_height=400
+
+# amount of white space to leave on the left side
+left_margin=100
+
+# amount of white space to leave on the right side of the plot. Note that the key, if drawn, will be in this white space
+right_margin=300
+
+# amount of white space to leave on the top
+top_margin=50
+
+# amount of white space to leave on the bottom
+bottom_margin=100
+
+# colors for each junction. Must have as many colors as there are junctions in the data
+colors=[[255,128,0],[0,200,102],[51,153,255]]
+
+# color for the axis
+axis_color=[0,0,0]
+
+# thickness for the axes
+axis_thickness=2
+
+# length of each tick mark. Set to 0 if you do not want tick marks
+tick_length=10
+
+# size of the labels for the horizontal (x) axis. Set to 0 if you do not want labels
+horiz_label_size=20
+
+# distance that horizontal axis labels are below the x axis
+horiz_label_spacing=25
+
+# font size for horizontal axis title. Set to 0 if you do not want horizontal axis title
+horiz_axis_title_size=27
+
+# distance that horizontal axis title is below the x axis
+horiz_axis_title_spacing=50
+
+# determines whether or not tick marks are drawn for the vertical (y) axis
+use_vertical_ticks=True
+
+# spacing between tick marks on the vertical axis. must be between 0 and 1
+vertical_tick_spacing=0.2
+
+# font size for vertical axis labels. Set to 0 if you do not want labels
+vert_label_size=15
+
+# distance that vertical axis labels are drawn away from the vertical axis
+vert_label_spacing=20
+
+
+# settings for structure plot key
+include_key = True
+
+# determines the font size of the key title. Use 0 if you do not want title
+key_title_size = 0
+
+# 2-element list containing the cartesian coordinates of the key. (0,0) is the bottom left corner of the plot
+key_position = [710,270]
+
+# list containing the labels for each color in the key. Set to None if you want to use the default labels
+key_labels = None
+
+# determines the font size of the text in the key
+key_font_size = 15
+
+# 3-element list determining the color of the text in the key
+key_text_color = [0,0,0]
+
+

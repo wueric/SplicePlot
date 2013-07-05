@@ -1,0 +1,28 @@
+splice junction naming scheme (defined by intronic regions):
+chr1:a-b,chr1:a-c,chr1:a-d
+
+
+data that will be supplied to single density plotting function:
+wiggle
+junctions dictionary
+genomic coordinates
+plotting parameters
+
+
+data that will be supplied to the general plotting function:
+list of wiggles, one item corresponding to each plot
+list of junction dictionaries, one item corresponding to each plot
+genomic coordinates
+list of possible mRNA structures
+plotting parameters
+
+
+
+plotting tool input and output
+
+.bam files
+.vcf file
+text file mapping IDs in vcf file to .bam file locations
+junction name (in the format specified above)
+variant position and chromosome number
+plot settings file
