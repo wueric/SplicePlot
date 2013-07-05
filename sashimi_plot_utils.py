@@ -1,5 +1,5 @@
 import matplotlib
-matplotlib.use('pdf')
+matplotlib.use('svg')
 from pylab import *
 from matplotlib.patches import PathPatch
 from matplotlib.path import Path
@@ -258,7 +258,7 @@ def plot_density(settings,event,read_depths_dict,mRNA_object,plot_title=None):
     universal_ticks = map(math.ceil, universal_yticks)
     for sample_num, curr_ax in enumerate(plotted_axes):
         if showYaxis:
-            curr_ax.set_ybound(lower=fake_ymin, upper=max_used_yval)
+            curr_ax.set_ybound(lower=fake_ymin, upper=1.2*max_used_yval)
             curr_yticklabels = []
             for label in universal_yticks:
                 if label <= 0:
@@ -280,7 +280,7 @@ def plot_density(settings,event,read_depths_dict,mRNA_object,plot_title=None):
                 curr_ax.set_ylabel('Depth',
                                        fontsize=font_size,
                                        va="bottom",
-                                       ha=y_horz_alignment)
+                                       ha=y_horz_alignment,labelpad=10)
 
         else:
             curr_ax.spines["left"].set_color('none')
@@ -408,7 +408,7 @@ if __name__ == '__main__':
 
    # unpickle data from local directory
 
-    average_depths_dict = pickle.load(open('/Users/EricWu/Documents/Research/2013/splice_plot/download_tarball/read_depths_dict.p','rb'))
+    average_depths_dict = pickle.load(open('/Users/EricWu/Documents/Research/2013/splice_plot/download_tarball/genotype_averages_pickled.p','rb'))
 
     for key in average_depths_dict:
         average_depths_dict[key] = average_depths_dict[key].filter_junctions_dict_for_event('chr1:17055-17915,chr1:17055-17606,chr1:17055-17233')
@@ -418,12 +418,12 @@ if __name__ == '__main__':
     # put in a dummy settings dictionary
     sashimi_settings = {}
 
-    sashimi_settings['width'] = 14
-    sashimi_settings['height'] = 10
+    sashimi_settings['width'] = 7
+    sashimi_settings['height'] = 5
 
     sashimi_settings['intron_scale'] = 1
     sashimi_settings['exon_scale'] = 1
-    sashimi_settings['colors'] = colors = ["#CC0011","#FF8800","#FF8800"] 
+    sashimi_settings['colors'] = ["#CC0011","#FF8800","#FFCC33"] 
     sashimi_settings['ymax'] = None
     sashimi_settings['number_junctions'] = True
     sashimi_settings['resolution'] = 0.5
@@ -440,4 +440,4 @@ if __name__ == '__main__':
 
     plot_density(sashimi_settings,'chr1:10583',average_depths_dict,mRNAs_object,plot_title=None)
 
-    plt.savefig('/Users/EricWu/Documents/Research/2013/splice_plot/download_tarball/stuff.pdf')
+    plt.savefig('/Users/EricWu/Documents/Research/2013/splice_plot/download_tarball/stuff.svg')

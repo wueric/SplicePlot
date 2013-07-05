@@ -199,6 +199,26 @@ class ReadDepth:
 
 
 def average_read_depth_by_genotype(read_depth_dict,vcf_file_name,var_pos):
+    '''
+        average_read_depth_by_genotype averages the ReadDepth objects in read_depth_dict based on the genotype
+            in a .vcf file
+
+        read_depth_dict is a dict of ReadDepth objects, where the keys are the individual IDs and the values are
+            the corresponding ReadDepth objects
+
+        vcf_file_name is the location of the .vcf file
+
+        var_pos is the position of the SNP, with format chr1:12345
+
+        return values:
+            A dict containing the average read depths. The keys are the genotypes, and the values are the
+                corresponding ReadDepth objects
+            
+            A dict which maps indiv IDs to genotype. The keys are the indiv IDs, and the values are the
+                corresponding genotypes
+
+    '''
+
     chrm = var_pos.split(':')[0]
     position = int(var_pos.split(':')[1])
 
@@ -212,6 +232,7 @@ def average_read_depth_by_genotype(read_depth_dict,vcf_file_name,var_pos):
         individual_id_list = vcf_object.getsamples()
 
         # the outer for loop should run at most once
+        variant = None
         for variant in variant_line:
 
             alleles_list = list(variant.ref)
@@ -252,12 +273,15 @@ def average_read_depth_by_genotype(read_depth_dict,vcf_file_name,var_pos):
                 average_read_depths_dict[genotype] = average_depth
 
             return average_read_depths_dict, genotype_by_id
+
+        if variant == None:
+            print 'There is no variant at {0}'.format(var_pos)
+            raise Exception
+
     except IOError:
         print 'There is no .vcf file at {0}'.format(vcf_file_name)
         raise Exception
 
-    print 'There is no variant at {0}'.format(var_pos)
-    raise Exception
 
     
 def map_indiv_id_to_bam_name(id_map_file):
@@ -268,9 +292,7 @@ def map_indiv_id_to_bam_name(id_map_file):
         id_map_file is the name of the file containing the id to bam file correspondences
 
         return value:
-            a function that maps individual id to .bam file location
-
-            a function that maps .bam file location to individual id
+            a dict that maps individual id to .bam file location
 
             a list of all the .bam file locations to process
     '''
@@ -554,6 +576,7 @@ if __name__ == '__main__':
     df = create_data_frame(read_depths_dict,'chr1:17055-17915,chr1:17055-17606,chr1:17055-17233','chr1:10583',genotype_by_id)
     print df.to_string()
 
-
+    pickle.dump(read_depths_dict,open('read_depths_dict.p','wb'))
+    pickle.dump(mRNA_info_object,open('possible_mRNAs.p','wb'))
     pickle.dump(df,open('df_pickled.p','wb'))
     pickle.dump(genotype_averages_dict,open('genotype_averages_pickled.p','wb'))
