@@ -28,27 +28,7 @@ class Axis():
 
 def plotter_svg(file_name,
                 data,
-                dimension,
-                axis_angles,
-                axis_thickness,
-                axis_color,
-                axis_start_radius,
-                axis_end_radius,
-                axis_step,
-                custom_scale,
-                axis_label_size,
-                axis_label_radius,
-                use_ticks,
-                tick_length,
-                tick_label_from_axis,
-                tick_label_size,
-                bezier_colors,
-                bezier_thickness,
-                include_key,
-                key_title_size,
-                key_text_color,
-                key_position,
-                key_font_size):
+                hive_plot_settings):
 
     """ Writes a .svg file containing the plot using the settings passed in as parameters
 
@@ -76,6 +56,30 @@ def plotter_svg(file_name,
     key_position is a 2-element list describing the cartesian coordinates of the key. (0,0) is the center of the plot
     key_font_size is a number determining the font size of the labels in the key
     """
+
+    # parse hive_plot_settings
+    dimension=hive_plot_settings['dimension']
+    axis_angles=hive_plot_settings['axis_angles']
+    axis_thickness=hive_plot_settings['axis_thickness']
+    axis_color=hive_plot_settings['axis_colors']
+    axis_start_radius=hive_plot_settings['axis_start_radius']
+    axis_end_radius=hive_plot_settings['axis_end_radius']
+    axis_step=hive_plot_settings['axis_subdivision']
+    custom_scale = hive_plot_settings['custom_scale']
+    axis_label_size=hive_plot_settings['axis_label_size']
+    axis_label_radius=hive_plot_settings['axis_label_radius']
+    use_ticks=hive_plot_settings['tick_marks']
+    tick_length=hive_plot_settings['tick_height']
+    tick_label_from_axis=hive_plot_settings['tick_label_distance']
+    tick_label_size=hive_plot_settings['tick_label_font_size']
+    bezier_colors=hive_plot_settings['bezier_colors']
+    bezier_thickness=hive_plot_settings['bezier_thickness']
+    include_key=hive_plot_settings['include_key']
+    key_title_size=hive_plot_settings['key_title_size']
+    key_text_color=hive_plot_settings['key_text_color']
+    key_position=hive_plot_settings['key_position']
+    key_font_size=hive_plot_settings['key_font_size']
+
 
     f1 = open(file_name,'w+')
 
@@ -199,28 +203,7 @@ def polar_to_cartesian(radius,degrees):
 
 def draw_population_structure_graph(output_file_name,
                                     data,
-                                    width,
-                                    height,
-                                    left_margin,
-                                    right_margin,
-                                    bottom_margin,
-                                    top_margin,
-                                    colors,
-                                    axis_color,
-                                    axis_thickness,
-                                    tick_length,
-                                    horiz_label_size,
-                                    horiz_label_spacing,
-                                    horiz_axis_title_size,
-                                    horiz_axis_title_spacing,
-                                    use_vertical_ticks,
-                                    vertical_tick_spacing,
-                                    vert_label_size,
-                                    vert_label_spacing,
-                                    include_key,
-                                    key_position,
-                                    key_font_size,
-                                    key_text_color):
+                                    struct_plot_settings):
     """ Draws a structure plot from the splicing data, broken up by genotype
 
     output_file_name is the file path where the plot will be written
@@ -248,6 +231,32 @@ def draw_population_structure_graph(output_file_name,
     key_font_size is the font size of each entry in the key
     key_text_color is an RGB object which represents the color of the text in the key
     """
+
+    # parse settings
+    width=struct_plot_settings['plot_width']
+    height=struct_plot_settings['plot_height']
+    left_margin=struct_plot_settings['left_margin']
+    right_margin=struct_plot_settings['right_margin']
+    bottom_margin=struct_plot_settings['bottom_margin']
+    top_margin=struct_plot_settings['top_margin']
+    colors=struct_plot_settings['colors']
+    axis_color=struct_plot_settings['axis_color']
+    axis_thickness =struct_plot_settings['axis_thickness']
+    tick_length=struct_plot_settings['tick_length']
+    horiz_label_size=struct_plot_settings['horiz_label_size']
+    horiz_label_spacing=struct_plot_settings['horiz_label_spacing']
+    horiz_axis_title_size=struct_plot_settings['horiz_axis_title_size']
+    horiz_axis_title_spacing=struct_plot_settings['horiz_axis_title_spacing']
+    use_vertical_ticks=struct_plot_settings['use_vertical_ticks']
+    vertical_tick_spacing=struct_plot_settings['vertical_tick_spacing']
+    vert_label_size=struct_plot_settings['vert_label_size']
+    vert_label_spacing=struct_plot_settings['vert_label_spacing']
+    include_key=struct_plot_settings['include_key']
+    key_position=struct_plot_settings['key_position']
+    key_font_size=struct_plot_settings['key_font_size']
+    key_text_color=struct_plot_settings['key_text_color']
+
+
     sorted_data = data.sort_index(axis=0,by=[data.columns[0]],ascending=[True],inplace=False)
 
     # assign colors for each junction
@@ -362,27 +371,7 @@ if __name__ == '__main__':
 
         plotter_svg(file_name=hive_plot_settings['output_file_path'],
                     data=data,
-                    dimension=hive_plot_settings['dimension'],
-                    axis_angles=hive_plot_settings['axis_angles'],
-                    axis_thickness=hive_plot_settings['axis_thickness'],
-                    axis_color=hive_plot_settings['axis_colors'],
-                    axis_start_radius=hive_plot_settings['axis_start_radius'],
-                    axis_end_radius=hive_plot_settings['axis_end_radius'],
-                    axis_step=hive_plot_settings['axis_subdivision'],
-                    custom_scale = hive_plot_settings['custom_scale'],
-                    axis_label_size=hive_plot_settings['axis_label_size'],
-                    axis_label_radius=hive_plot_settings['axis_label_radius'],
-                    use_ticks=hive_plot_settings['tick_marks'],
-                    tick_length=hive_plot_settings['tick_height'],
-                    tick_label_from_axis=hive_plot_settings['tick_label_distance'],
-                    tick_label_size=hive_plot_settings['tick_label_font_size'],
-                    bezier_colors=hive_plot_settings['bezier_colors'],
-                    bezier_thickness=hive_plot_settings['bezier_thickness'],
-                    include_key=hive_plot_settings['include_key'],
-                    key_title_size=hive_plot_settings['key_title_size'],
-                    key_text_color=hive_plot_settings['key_text_color'],
-                    key_position=hive_plot_settings['key_position'],
-                    key_font_size=hive_plot_settings['key_font_size'])
+                    hive_plot_settings=hive_plot_settings)
 
     if struct_plot_settings['draw_struct_plot']:
 
@@ -390,27 +379,6 @@ if __name__ == '__main__':
 
         draw_population_structure_graph(output_file_name=struct_plot_settings['output_file_path'],
                                         data=data,
-                                        width=struct_plot_settings['plot_width'],
-                                        height=struct_plot_settings['plot_height'],
-                                        left_margin=struct_plot_settings['left_margin'],
-                                        right_margin=struct_plot_settings['right_margin'],
-                                        bottom_margin=struct_plot_settings['bottom_margin'],
-                                        top_margin=struct_plot_settings['top_margin'],
-                                        colors=struct_plot_settings['colors'],
-                                        axis_color=struct_plot_settings['axis_color'],
-                                        axis_thickness =struct_plot_settings['axis_thickness'],
-                                        tick_length=struct_plot_settings['tick_length'],
-                                        horiz_label_size=struct_plot_settings['horiz_label_size'],
-                                        horiz_label_spacing=struct_plot_settings['horiz_label_spacing'],
-                                        horiz_axis_title_size=struct_plot_settings['horiz_axis_title_size'],
-                                        horiz_axis_title_spacing=struct_plot_settings['horiz_axis_title_spacing'],
-                                        use_vertical_ticks=struct_plot_settings['use_vertical_ticks'],
-                                        vertical_tick_spacing=struct_plot_settings['vertical_tick_spacing'],
-                                        vert_label_size=struct_plot_settings['vert_label_size'],
-                                        vert_label_spacing=struct_plot_settings['vert_label_spacing'],
-                                        include_key=struct_plot_settings['include_key'],
-                                        key_position=struct_plot_settings['key_position'],
-                                        key_font_size=struct_plot_settings['key_font_size'],
-                                        key_text_color=struct_plot_settings['key_text_color'])
+                                        struct_plot_settings=struct_plot_settings)
 
     print 'Done!'

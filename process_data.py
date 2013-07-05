@@ -346,6 +346,9 @@ class Exon:
 
         return bases_covered / (top_index + 1 - bottom_index)
 
+    def determine_average_coverage(self,read_depth):
+        return self.determine_proportion_covered(read_depth) / (self.high - self.low + 1.0)
+
     def __str__(self):
         return '{0}:{1}-{2}{3}'.format(self.chrm,self.low,self.high,self.strand)
 
@@ -387,9 +390,33 @@ def initialize_read_depths_and_determine_exons(junction_name,gtf_file_name,bam_l
     junctions_list = junction_name.split(',')
     
     chrom = junctions_list[0].split(':')[0]
-    shared_site = int(junctions_list[0].split(':')[1].split('-')[0])
-    splice_junc_coordinate_list = map(lambda x: int(x.split(':')[1].split('-')[1]),junctions_list)
-    splice_junc_coordinate_list.append(shared_site)
+
+    # figure out the shared site
+
+    splice_junc_coordinate_list = []
+    shared_site = None
+
+    lower_ss, upper_ss = [], []
+    for intronic_region in junctions_list:
+        low, high = map(int, intronic_region.split(':')[1].split('-'))
+        if low not in lower_ss:
+            lower_ss.append(low)
+        if high not in upper_ss:
+            upper_ss.append(high)
+
+    if len(upper_ss) == 1:
+        splice_junc_coordinate_list.extend(lower_ss)
+        splice_junc_coordinate_list.extend(upper_ss)
+        shared_site = upper_ss[0]
+    elif len(lower_ss) == 1:
+        splice_junc_coordinate_list.extend(upper_ss)
+        splice_junc_coordinate_list.extend(lower_ss)
+        shared_site = lower_ss[0]
+
+    else:
+        print '{0} is not a valid junction name'.format(junction_name)
+        raise Exception
+            
     splice_junc_coordinate_list = set(splice_junc_coordinate_list)
 
     gtf_tabix = pysam.Tabixfile(gtf_file_name,'r')
@@ -419,7 +446,7 @@ def initialize_read_depths_and_determine_exons(junction_name,gtf_file_name,bam_l
     current_best_exon_by_coordinate = {}
 
     for exon in filtered_exons_list:
-        prop_covered = exon.determine_proportion_covered(total_depth)
+        prop_covered = exon.determine_average_coverage(total_depth)
         current_exon_evaluated = EvaluatedExon(exon,prop_covered)
 
         if exon.low in splice_junc_coordinate_list:
@@ -562,21 +589,20 @@ def create_data_frame(read_depth_dict,junction_name,var_pos,genotype_lookup_dict
 if __name__ == '__main__':
     
     bam_to_id_dict, bam_list = map_indiv_id_to_bam_name('/home/wueric/bam/map_file.txt')
-    read_depths_dict, mRNA_info_object = initialize_read_depths_and_determine_exons('chr1:17055-17915,chr1:17055-17606,chr1:17055-17233','/home/wueric/no_duplicates.unzip.exons.gencode.v17.annotation.gtf.gz',bam_list,bam_to_id_dict)
+    read_depths_dict, mRNA_info_object = initialize_read_depths_and_determine_exons('chr10:90768754-90770296,chr10:90767594-90770296,chr10:90762951-90770296','/home/wueric/no_duplicates.unzip.exons.gencode.v17.annotation.gtf.gz',bam_list,bam_to_id_dict)
     print read_depths_dict
     print mRNA_info_object
 
-    
     genotype_averages_dict, genotype_by_id = average_read_depth_by_genotype(read_depths_dict,'/home/wueric/bam/sample.vcf.gz','chr1:10583')
 
-    print genotype_averages_dict
 
-    print genotype_by_id
-
-    df = create_data_frame(read_depths_dict,'chr1:17055-17915,chr1:17055-17606,chr1:17055-17233','chr1:10583',genotype_by_id)
+    df = create_data_frame(read_depths_dict,'chr10:90768754-90770296,chr10:90767594-90770296,chr10:90762951-90770296','chr1:10583',genotype_by_id)
     print df.to_string()
 
     pickle.dump(read_depths_dict,open('read_depths_dict.p','wb'))
     pickle.dump(mRNA_info_object,open('possible_mRNAs.p','wb'))
     pickle.dump(df,open('df_pickled.p','wb'))
     pickle.dump(genotype_averages_dict,open('genotype_averages_pickled.p','wb'))
+
+    print ReadDepth.determine_depth('/home/xli6/2012_ceufam/tophat/bam/NA12878_2ndr.bam','chr10',90762951,90770296)
+
