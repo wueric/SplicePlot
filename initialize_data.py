@@ -372,4 +372,25 @@ def calculate_average_expression_and_data_frame(var_pos,junction_name,vcf,annota
 
 if __name__ == '__main__':
     # argparse stuff
-    
+    parser = argparse.ArgumentParser(description='Initialize and pickle alternative splice junction data')
+
+    parser.add_argument(parser.add_argument('--varpos',type=str,required=True,help='string describing position of SNP. should have format chr_name:base_number')
+
+    parser.add_argument('--junc',type=str,required=True,help='string representing junction. should have format chr_name:lower_base-upper_base,chr_name:lower_base-upper_base, where lower_base and upper_base represent possible intronic regions')
+
+    parser.add_argument('--vcf',type=str,required=True,help='location of the vcf file')
+
+    parser.add_argument('--gtf',type=str,required=True,help='location of the gtf file')
+
+    parser.add_argument('--mf',type=str,required=True,help='location of the map file')
+
+    parser.add_argument('-o','--output',type=str,required=True,help='location of output .p file')
+
+    args = parser.parse_args()
+
+    genotype_averages_dict, data_frame = calculate_average_expression_and_data_frame(args.varpos,args.junc,args.vcf,args.gtf,args.mf)
+
+    pickle_file = open(args.output,'wb')
+    pickle.dump(args.varpos,pickle_file)
+    pickle.dump(genotype_averages_dict,pickle_file)
+    pickle.dump(data_frame,pickle_file)
