@@ -1,8 +1,9 @@
 import pysam
 import pandas
 import cPickle as pickle
-from ReadDepth import ReadDepth
-from mRNAsObject import mRNAsObject
+from lib.ReadDepth import ReadDepth
+from lib.mRNAsObject import mRNAsObject
+import argparse
 
 def average_read_depth_by_genotype(read_depth_dict,vcf_file_name,var_pos):
     '''
@@ -357,20 +358,18 @@ def create_data_frame(read_depth_dict,junction_name,var_pos,genotype_lookup_dict
     return df.reindex(columns=new_col_order)
 
 def calculate_average_expression_and_data_frame(var_pos,junction_name,vcf,annotation,map_file):
-    try:
-        bam_to_id_dict, bam_list = map_indiv_id_to_bam_name(map_file)
-        
-        read_depths_dict, mRNA_info_object = initialize_read_depths_and_determine_exons(junction_name,
-            annotation,bam_list,bam_to_id_dict)
+    bam_to_id_dict, bam_list = map_indiv_id_to_bam_name(map_file)
+    
+    read_depths_dict, mRNA_info_object = initialize_read_depths_and_determine_exons(junction_name,
+        annotation,bam_list,bam_to_id_dict)
 
-        genotype_averages_dict, genotype_by_id = average_read_depth_by_genotype(read_depths_dict,vcf,var_pos)
+    genotype_averages_dict, genotype_by_id = average_read_depth_by_genotype(read_depths_dict,vcf,var_pos)
 
-        data_frame = create_data_frame(read_depths_dict,junction_name,var_pos,genotype_by_id)
+    data_frame = create_data_frame(read_depths_dict,junction_name,var_pos,genotype_by_id)
 
-        return genotype_averages_dict, data_frame
-    except:
-        pass
+    return genotype_averages_dict, data_frame
 
 
 if __name__ == '__main__':
     # argparse stuff
+    
