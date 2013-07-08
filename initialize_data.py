@@ -365,9 +365,14 @@ def calculate_average_expression_and_data_frame(var_pos,junction_name,vcf,annota
     read_depths_dict, mRNA_info_object = initialize_read_depths_and_determine_exons(junction_name,
         annotation,bam_list,bam_to_id_dict)
 
-    genotype_averages_dict, genotype_by_id = average_read_depth_by_genotype(read_depths_dict,vcf,var_pos)
+    new_read_depths_dict = {}
+    for indiv_id, read_depth_object in read_depths_dict.items():
+        new_read_depths_dict[indiv_id] = read_depth_object.filter_junctions_dict_for_event(junction_name)
 
-    data_frame = create_data_frame(read_depths_dict,junction_name,var_pos,genotype_by_id)
+    genotype_averages_dict, genotype_by_id = average_read_depth_by_genotype(new_read_depths_dict,vcf,var_pos)
+
+
+    data_frame = create_data_frame(new_read_depths_dict,junction_name,var_pos,genotype_by_id)
 
     return genotype_averages_dict, data_frame
 
