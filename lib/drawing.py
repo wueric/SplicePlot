@@ -10,8 +10,17 @@ class RGB():
             self.blue = int(blue)
 
     @classmethod
-    def from_list(cls,colors):
-        return cls(colors[0],colors[1],colors[2])
+    def from_hex_string(cls,hex_string):
+        if len(hex_string) == 7:
+            hex_string = hex_string[1:]
+
+        if len(hex_string) == 6:
+            red = int(hex_string[0:2],16)
+            green = int(hex_string[2:4],16)
+            blue = int(hex_string[4:],16)
+            return cls(red,green,blue)
+        else:
+            raise Exception, "not a valid hexadecimal color"
 
     def __str__(self):
         return 'rgb({}, {}, {})'.format(self.red, self.green, self.blue)

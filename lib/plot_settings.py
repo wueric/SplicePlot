@@ -32,8 +32,8 @@ def default_hive_settings():
 
     hive_settings['draw_bars'] = True
     
-    hive_settings['axis_colors'] = [0,0,0]
-    hive_settings['bezier_colors'] = [[255,0,0],[0,255,0],[0,0,255]]
+    hive_settings['axis_colors'] = '#000000'
+    hive_settings['bezier_colors'] = ['#FF0000','#00FF00','#0000FF']
 
     hive_settings['use_custom_axis_labels'] = False
     hive_settings['axis_labels'] = None
@@ -68,8 +68,8 @@ def default_struct_settings():
     struct_settings['top_margin']=100
     struct_settings['bottom_margin']=100
 
-    struct_settings['colors']=[[200,10,10],[10,200,10],[10,10,200]]
-    struct_settings['axis_color']=[0,0,0]
+    struct_settings['colors']=['#FF0000','#00FF00','#0000FF']
+    struct_settings['axis_color']='#000000'
 
     struct_settings['axis_thickness']=2
 
@@ -90,7 +90,7 @@ def default_struct_settings():
     struct_settings['key_title_size'] = 10
     struct_settings['key_position'] = [800,200]
     struct_settings['key_font_size'] = 15
-    struct_settings['key_text_color'] = [0,0,0]
+    struct_settings['key_text_color'] = '#000000'
 
     return struct_settings
 
@@ -102,7 +102,7 @@ def default_sashimi_settings():
 
     sashimi_settings['intron_scale'] = 1
     sashimi_settings['exon_scale'] = 1
-    sashimi_settings['colors'] = [[200,10,10],[10,200,10],[10,10,200]] 
+    sashimi_settings['colors'] = ['#FF0000','#00FF00','#0000FF'] 
     sashimi_settings['ymax'] = None
     sashimi_settings['number_junctions'] = True
     sashimi_settings['resolution'] = 0.5
@@ -170,14 +170,14 @@ def parse_hive_plot_settings(config):
     # check to make sure that the settings have the right format and preprocess them
     try:
         for i in range(len(colorified)):
-            colorified[i] = RGB.from_list(settings['bezier_colors'][i])
+            colorified[i] = RGB.from_hex_string(settings['bezier_colors'][i])
         settings['bezier_colors'] = colorified
     except Exception:
         print 'Invalid colors in bezier_colors'
         sys.exit(1)
 
     try:
-        settings['axis_colors'] = RGB.from_list(settings['axis_colors'])
+        settings['axis_colors'] = RGB.from_hex_string(settings['axis_colors'])
     except Exception:
         print 'Invalid color in axis_colors'
         sys.exit(1)
@@ -219,7 +219,7 @@ def parse_hive_plot_settings(config):
                 print 'components of key_text_color must be between 0 and 255'
                 sys.exit(1)
 
-        settings['key_text_color'] = RGB.from_list(settings['key_text_color'])
+        settings['key_text_color'] = RGB.from_hex_string(settings['key_text_color'])
     
     return settings
 
@@ -288,21 +288,21 @@ def parse_struct_plot_settings(config_parser):
         colorified = [None] * len(settings['colors'])
         try:
             for i in range(len(colorified)):
-                colorified[i] = RGB.from_list(settings['colors'][i])
+                colorified[i] = RGB.from_hex_string(settings['colors'][i])
             settings['colors'] = colorified
         except Exception:
             print 'Invalid colors in colors'
             sys.exit(1)
 
     try:
-        settings['axis_color'] = RGB.from_list(settings['axis_color'])
+        settings['axis_color'] = RGB.from_hex_string(settings['axis_color'])
     except Exception:
         print 'Invalid color in axis_color'
         sys.exit(1)
 
     if settings['include_key']:
         try:
-            settings['key_text_color'] = RGB.from_list(settings['key_text_color'])
+            settings['key_text_color'] = RGB.from_hex_string(settings['key_text_color'])
         except Exception:
             print 'Invalid color in key_text_color'
             sys.exit(1)
@@ -354,9 +354,6 @@ def parse_sashimi_settings(config_parser):
         elif option in OTHER_PARAMS:
             settings[option] = ast.literal_eval(config_parser.get('struct_plot',option))
 
-    # make sure that parameters are valid
-
-    
     return settings
 
 
@@ -389,38 +386,4 @@ def parse_settings(settings_file):
         return hive_plot_settings, struct_plot_settings, sashimi_plot_settings
     except IOError:
         print '{0} is not a valid file path'
-        sys.exit(1)
-
-
-
-def create_data_frame_from_file(file_name):
-
-    """ Creates a pandas.DataFrame object containing splicing expression information by reading a text file.
-
-    file_name is the name of the file containing the splicing expression
-    """
-
-    try:
-        f1 = open(file_name,'r').readlines()
-        header = f1[0].strip('\n').split('\t')
-
-        col_names = header[1:]
-
-        construction_data_dict = {}
-        
-        for i in range(1,len(f1)):
-            line = f1[i].strip('\n').split('\t')
-
-            expression_values = map(float,line[2:])
-            line[2:] = expression_values
-
-            indiv_name = line[0]
-            construction_data_dict[indiv_name] = pandas.Series(line[1:],col_names)
-
-        data_frame = pandas.DataFrame(construction_data_dict).T
-        return data_frame
-            
-
-    except IOError:
-        print 'Invalid data file'
         sys.exit(1)

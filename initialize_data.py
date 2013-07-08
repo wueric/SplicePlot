@@ -1,6 +1,6 @@
 import pysam
 import pandas
-import cPickle as pickle
+import anydbm as dbm
 from lib.ReadDepth import ReadDepth
 from lib.mRNAsObject import mRNAsObject
 import argparse
@@ -374,11 +374,12 @@ def calculate_average_expression_and_data_frame(var_pos,junction_name,vcf,annota
 
     data_frame = create_data_frame(new_read_depths_dict,junction_name,var_pos,genotype_by_id)
 
-    return genotype_averages_dict, data_frame
+    return genotype_averages_dict, data_frame, mRNA_info_object
 
 
 if __name__ == '__main__':
-    # argparse stuff
+
+
     parser = argparse.ArgumentParser(description='Initialize and pickle alternative splice junction data')
 
     parser.add_argument('--varpos',type=str,required=True,help='string describing position of SNP. should have format chr_name:base_number')
@@ -393,12 +394,17 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    genotype_averages_dict, data_frame = calculate_average_expression_and_data_frame(args.varpos,args.junc,args.vcf,args.gtf,args.mf)
+    genotype_averages_dict, data_frame, mRNA_info_object = calculate_average_expression_and_data_frame(args.varpos,args.junc,args.vcf,args.gtf,args.mf)
 
 
     output_file_path = '{0}/plots/{1}@{2}.p'.format(os.path.dirname(__file__),args.varpos,args.junc)
 
-    pickle_file = open(output_file_path,'wb')
-    pickle.dump(args.varpos,pickle_file)
-    pickle.dump(genotype_averages_dict,pickle_file)
-    pickle.dump(data_frame,pickle_file)
+    # store the data in a dbm database file
+    db = dbm.open(output_file_path,'n')
+    db['varpos'] = args.varpos
+    db['junc_name'] = args.junc
+    db['averages'] = genotype_averages_dict
+    db['mRNA'] = mRNA_info_object
+    db['df'] = data_frame
+
+    db.close()

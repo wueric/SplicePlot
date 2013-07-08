@@ -1,8 +1,7 @@
-import lib.drawing as drawing
+import drawing
 import math
-import lib.plot_settings as plot_settings
+import plot_settings
 import argparse
-import cPickle as pickle
 import pandas
 
 class Axis():
@@ -26,7 +25,7 @@ class Axis():
 
         return self.start_radius + (value - self.minimum) * (self.end_radius - self.start_radius) / (self.maximum - self.minimum)
 
-def plotter_svg(file_name,
+def draw_hive_plot(file_name,
                 data,
                 hive_plot_settings):
 

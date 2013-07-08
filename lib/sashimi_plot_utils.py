@@ -403,7 +403,7 @@ def cubic_bezier(pts, t):
     return p0 * (1 - t)**3 + 3 * t * p1 * (1 - t) ** 2 + \
         3 * t**2 * (1 - t) * p2 + t**3 * p3
 
-def draw_sashimi_plot(output_file_path,settings,var_pos,average_depths_dict,mRNAs_object,plot_title):
+def draw_sashimi_plot(output_file_path,settings,var_pos,average_depths_dict,mRNAs_object,plot_title=None):
 
     '''
         draw_sashimi_plot draws the complete sashimi plot
