@@ -1,6 +1,6 @@
 import pysam
 import pandas
-import anydbm as dbm
+import cPickle as pickle
 from lib.ReadDepth import ReadDepth
 from lib.mRNAsObject import mRNAsObject
 import argparse
@@ -397,14 +397,14 @@ if __name__ == '__main__':
     genotype_averages_dict, data_frame, mRNA_info_object = calculate_average_expression_and_data_frame(args.varpos,args.junc,args.vcf,args.gtf,args.mf)
 
 
-    output_file_path = '{0}/plots/{1}@{2}.p'.format(os.path.dirname(__file__),args.varpos,args.junc)
+    output_file_path = '{0}/pickle_files/{1}@{2}.p'.format(os.path.dirname(os.path.abspath(__file__)),args.varpos,args.junc)
 
-    # store the data in a dbm database file
-    db = dbm.open(output_file_path,'n')
-    db['varpos'] = args.varpos
-    db['junc_name'] = args.junc
-    db['averages'] = genotype_averages_dict
-    db['mRNA'] = mRNA_info_object
-    db['df'] = data_frame
+    # pickle the data
+    pickle_file = open(output_file_path,'wb')
+    pickle.dump(args.varpos,pickle_file)
+    pickle.dump(args.junc,pickle_file)
+    pickle.dump(genotype_averages_dict,pickle_file)
+    pickle.dump(mRNA_info_object,pickle_file)
+    pickle.dump(data_frame,pickle_file)
 
-    db.close()
+    pickle_file.close()
