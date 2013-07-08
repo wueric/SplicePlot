@@ -9,7 +9,6 @@ draw_hive_plot = True
 # size of the plot
 dimension = 800
 # output file path
-output_file_path='hive.svg'
 
 # tick mark settings
 # boolean determining whether tick marks are drawn
@@ -36,7 +35,7 @@ axis_start_radius = 30
 axis_end_radius = 300
 
 # 3-element list containing the RGB values of the axis color
-axis_colors = [0,0,0]
+axis_colors = '#000000'
 
 
 # list containing the radii for each of the axis labels, measured from center of the plot
@@ -60,7 +59,7 @@ custom_scale = [[0,1],[0,1],[0,1]]
 
 # bezier curve settings
 # list containing lists determining the RGB values of the beziers
-bezier_colors = [[255,128,0],[0,200,102],[51,153,255]]
+bezier_colors = ['#FF8000','#00C866','#3399FF']
 
 # determines the thickness of the beziers
 bezier_thickness = 0.5
@@ -79,7 +78,7 @@ key_position = [100,200]
 key_font_size = 15
 
 # 3-element list determining the color of the text in the key
-key_text_color = [0,0,0]
+key_text_color = '#000000'
 
 
 
@@ -91,7 +90,6 @@ key_text_color = [0,0,0]
 
 # basic settings
 draw_struct_plot = True
-output_file_path='structure.svg'
 
 # dimensions
 plot_width=1000
@@ -110,10 +108,10 @@ top_margin=50
 bottom_margin=100
 
 # colors for each junction. Must have as many colors as there are junctions in the data
-colors=[[255,128,0],[0,200,102],[51,153,255]]
+colors=["#CC0011","#FF8800","#FFCC33"] 
 
 # color for the axis
-axis_color=[0,0,0]
+axis_color='#000000'
 
 # thickness for the axes
 axis_thickness=2
@@ -162,6 +160,26 @@ key_labels = None
 key_font_size = 15
 
 # 3-element list determining the color of the text in the key
-key_text_color = [0,0,0]
+key_text_color = '#000000'
 
 
+# settings for sashimi plot
+[sashimi_plot]
+
+draw_sashimi_plot = True
+
+width = 7
+height = 5
+intron_scale = 1
+exon_scale = 1
+colors = ["#CC0011","#FF8800","#FFCC33"] 
+ymax = 300
+number_junctions=True
+resolution=0.5
+junction_log_base = 10
+reverse_minus = False
+font_size = 6
+nyticks = 3
+nxticks = 4
+show_ylabel = True
+show_xlabel = True

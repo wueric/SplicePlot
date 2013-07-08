@@ -2,9 +2,9 @@ import sys
 import argparse
 from lib.ReadDepth import ReadDepth
 from lib.mRNAsObject import mRNAsObject
-from lib.parse_settings import parse_settings
+from lib.plot_settings import parse_settings
 from lib.hive_struct_utils import draw_hive_plot, draw_population_structure_graph
-from lib.sashimi_plot_utils import 
+from lib.sashimi_plot_utils import draw_sashimi_plot
 import os
 import cPickle as pickle
 
@@ -28,18 +28,21 @@ if __name__ == '__main__':
     data_frame = pickle.load(pickle_file)
     pickle_file.close()
 
+    plot_name_stem = args.pickle.split('/')
+    plot_name_stem = plot_name_stem[len(plot_name_stem)-1]
+
     if hive_plot_settings['draw_hive_plot']:
-        draw_hive_plot(file_name='{0}/{1}_hive.svg'.format(os.path.dirname(__file__),db),
+        draw_hive_plot(file_name='{0}/plots/{1}_hive.svg'.format(os.path.dirname(os.path.abspath(__file__)),plot_name_stem),
                 data=data_frame,
                 hive_plot_settings=hive_plot_settings)
 
     if struct_plot_settings['draw_struct_plot']:
-        draw_population_structure_graph(output_file_name='{0}/{1}_structure.svg'.format(os.path.dirname(__file__),db),
+        draw_population_structure_graph(output_file_name='{0}/plots/{1}_structure.svg'.format(os.path.dirname(os.path.abspath(__file__)),plot_name_stem),
                                     data=data_frame,
                                     struct_plot_settings=struct_plot_settings)
 
     if sashimi_plot_settings['draw_sashimi_plot']:
-        draw_sashimi_plot(output_file_path='{0}/{1}_structure.svg'.format(os.path.dirname(__file__),db),
+        draw_sashimi_plot(output_file_path='{0}/plots/{1}_sashimi.svg'.format(os.path.dirname(os.path.abspath(__file__)),plot_name_stem),
                     settings=sashimi_plot_settings,
                     var_pos=varpos,
                     average_depths_dict=genotype_averages_dict,

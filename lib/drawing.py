@@ -23,7 +23,7 @@ class RGB():
             raise Exception, "not a valid hexadecimal color"
 
     def __str__(self):
-        return 'rgb({}, {}, {})'.format(self.red, self.green, self.blue)
+        return 'rgb({0}, {1}, {2})'.format(self.red, self.green, self.blue)
 
 
 def draw_line(svg_file,x1,y1,x2,y2,thickness=10,color=RGB(0,0,0)):

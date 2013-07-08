@@ -130,8 +130,8 @@ def parse_hive_plot_settings(config):
 
     settings = default_hive_settings()
     
-    INTEGER_PARAMS = {'dimension'}
-    FLOAT_PARAMS = {'axis_subdivision',
+    INTEGER_PARAMS = set(['dimension'])
+    FLOAT_PARAMS = set(['axis_subdivision',
                         'tick_label_font_size',
                         'tick_label_distance',
                         'axis_start_radius',
@@ -142,21 +142,21 @@ def parse_hive_plot_settings(config):
                         'tick_thickness',
                         'axis_label_size',
                         'key_font_size',
-                        'key_title_size'}
-    BOOLEAN_PARAMS = {'tick_marks',
+                        'key_title_size'])
+    BOOLEAN_PARAMS = set(['tick_marks',
                         'tick_labels',
                         'draw_bars',
                         'include_key',
-                        'draw_hive_plot'}
-    OTHER_PARAMS = {'axis_colors',
+                        'draw_hive_plot'])
+    OTHER_PARAMS = set(['axis_colors',
                         'bezier_colors',
                         'axis_angles',
                         'custom_scale',
                         'axis_label_radius',
                         'key_position',
                         'key_text_color',
-                        'key_position',
-			'output_file_path'}
+                        'key_position'])
+
     for option in config.options('hive_plot'):
         if option in INTEGER_PARAMS:
             settings[option] = config.getint('hive_plot',option)
@@ -168,6 +168,7 @@ def parse_hive_plot_settings(config):
             settings[option] = ast.literal_eval(config.get('hive_plot',option))
 
     # check to make sure that the settings have the right format and preprocess them
+    colorified = [None] * len(settings['bezier_colors'])
     try:
         for i in range(len(colorified)):
             colorified[i] = RGB.from_hex_string(settings['bezier_colors'][i])
@@ -202,24 +203,13 @@ def parse_hive_plot_settings(config):
         if type(settings['key_position']) is not list:
             print 'key_position must be list'
             sys.exit(1)
-        if type(settings['key_text_color']) is not list:
-            print 'key_text_color must be list'
-            sys.exit(1)
-
         if len(settings['key_position']) != 2:
             print 'key_position can have exactly 2 coordinates'
             sys.exit(1)
-
-        if len(settings['key_text_color']) != 3:
-            print 'key_text_color must have exactly 3 components'
-            sys.exit(1)
-
-        for color in settings['key_text_color']:
-            if color < 0 or color > 255:
-                print 'components of key_text_color must be between 0 and 255'
-                sys.exit(1)
-
-        settings['key_text_color'] = RGB.from_hex_string(settings['key_text_color'])
+        try:
+            settings['key_text_color'] = RGB.from_hex_string(settings['key_text_color'])
+        except:
+            print 'key_text_color is not a valid color'
     
     return settings
 
@@ -235,13 +225,13 @@ def parse_struct_plot_settings(config_parser):
     
     settings = default_struct_settings()
 
-    INTEGER_PARAMS = {'plot_width',
+    INTEGER_PARAMS = set(['plot_width',
                         'plot_height',
                         'left_margin',
                         'right_margin',
                         'top_margin',
-                        'bottom_margin'}
-    FLOAT_PARAMS = {'axis_thickness',
+                        'bottom_margin'])
+    FLOAT_PARAMS = set(['axis_thickness',
                         'tick_length',
                         'horiz_label_size',
                         'horiz_label_spacing',
@@ -251,17 +241,17 @@ def parse_struct_plot_settings(config_parser):
                         'vert_label_size',
                         'vert_label_spacing',
                         'key_title_size',
-                        'key_font_size'}
-    BOOLEAN_PARAMS = {'draw_struct_plot',
+                        'key_font_size'])
+    BOOLEAN_PARAMS = set(['draw_struct_plot',
                         'use_vertical_ticks',
                         'include_key',
-                        'use_custom_key_labels'}
-    OTHER_PARAMS = {'horiz_axis_title',
+                        'use_custom_key_labels'])
+    OTHER_PARAMS = set(['horiz_axis_title',
                         'colors',
                         'axis_color',
                         'output_file_path',
                         'key_text_color',
-                        'key_position'}
+                        'key_position'])
 
 
     for option in config_parser.options('struct_plot'):
@@ -280,9 +270,6 @@ def parse_struct_plot_settings(config_parser):
 
     if type(settings['colors']) is not list:
         print 'colors must be a list of 3 element lists'
-        sys.exit(1)
-    if len(settings['colors']) < data.shape[1] - 1:
-        print 'there are not enough colors in colors'
         sys.exit(1)
     else:
         colorified = [None] * len(settings['colors'])
@@ -322,37 +309,40 @@ def parse_struct_plot_settings(config_parser):
 
 
 def parse_sashimi_settings(config_parser):
+
+    print 'Parsing sashimi plot settings...'
+
     settings = default_sashimi_settings()
 
-    FLOAT_PARAMS = {'width',
+    FLOAT_PARAMS = set(['width',
                     'height',
                     'intron_scale',
                     'exon_scale',
                     'ymax',
                     'resolution',
                     'junction_log_base',
-                    'font_size'}
+                    'font_size'])
 
-    INT_PARAMS = {'nyticks',
-                    'nxticks'}
+    INT_PARAMS = set(['nyticks',
+                    'nxticks'])
 
-    BOOLEAN_PARAMS = {'number_junctions',
+    BOOLEAN_PARAMS = set(['draw_sashimi_plot',
+                    'number_junctions',
                     'reverse_minus',
                     'show_ylabel',
-                    'show_xlabel'}
+                    'show_xlabel'])
 
-    OTHER_PARAMS = {'colors'}
-
+    OTHER_PARAMS = set(['colors'])
 
     for option in config_parser.options('sashimi_plot'):
-        if option in INTEGER_PARAMS:
-            settings[option] = config_parser.getint('struct_plot',option)
+        if option in INT_PARAMS:
+            settings[option] = config_parser.getint('sashimi_plot',option)
         elif option in FLOAT_PARAMS:
-            settings[option] = config_parser.getfloat('struct_plot',option)
+            settings[option] = config_parser.getfloat('sashimi_plot',option)
         elif option in BOOLEAN_PARAMS:
-            settings[option] = config_parser.getboolean('struct_plot',option)
+            settings[option] = config_parser.getboolean('sashimi_plot',option)
         elif option in OTHER_PARAMS:
-            settings[option] = ast.literal_eval(config_parser.get('struct_plot',option))
+            settings[option] = ast.literal_eval(config_parser.get('sashimi_plot',option))
 
     return settings
 
