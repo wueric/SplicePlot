@@ -5,7 +5,8 @@ from matplotlib.patches import PathPatch
 from matplotlib.path import Path
 import math
 import matplotlib.pyplot as plt
-from process_data import *
+from ReadDepth import ReadDepth
+from mRNAsObject import mRNAsObject
 
 
 def plot_density_single(read_depth_object, sample_label,
@@ -402,20 +403,37 @@ def cubic_bezier(pts, t):
     return p0 * (1 - t)**3 + 3 * t * p1 * (1 - t) ** 2 + \
         3 * t**2 * (1 - t) * p2 + t**3 * p3
 
+def draw_sashimi_plot(output_file_path,settings,var_pos,average_depths_dict,mRNAs_object,plot_title):
+
+    '''
+        draw_sashimi_plot draws the complete sashimi plot
+
+        output_file_path is the file path that the plot will be written to
+
+        settings is a dict containing the settings for the sashimi plot
+
+        var_pos is the location of the SNP, in the format chr1:12345
+
+        average_depths_dict is a dict containing the average read depths by genotype. The keys are the genotypes,
+            and the values are ReadDepth objects
+
+        mRNAs_object is an mRNAsObject containing information about the transcript structure
+
+        plot_title is the title of the plot
+
+
+        return values:
+            None. Draws sashimi plot
+
+    '''
+
+    plt.figure(figsize=[settings['width'],settings['height']])
+    plot_density(settings,var_pos,average_depths_dict,mRNAs_object,plot_title)
+    plt.savefig(output_file_path)
+
 # debugging code
 if __name__ == '__main__':
 
-
-   # unpickle data from local directory
-
-    average_depths_dict = pickle.load(open('/Users/EricWu/Documents/Research/2013/splice_plot/download_tarball/genotype_averages_pickled.p','rb'))
-
-    for key in average_depths_dict:
-        average_depths_dict[key] = average_depths_dict[key].filter_junctions_dict_for_event('chr1:17055-17915,chr1:17055-17606,chr1:17055-17233')
-
-    mRNAs_object = pickle.load(open('/Users/EricWu/Documents/Research/2013/splice_plot/download_tarball/possible_mRNAs.p','rb'))
-
-    # put in a dummy settings dictionary
     sashimi_settings = {}
 
     sashimi_settings['width'] = 7
@@ -434,10 +452,3 @@ if __name__ == '__main__':
     sashimi_settings['nxticks'] = 4
     sashimi_settings['show_ylabel'] = True
     sashimi_settings['show_xlabel'] = True
-
-    # set up the plot
-    plt.figure(figsize=[sashimi_settings['width'],sashimi_settings['height']])
-
-    plot_density(sashimi_settings,'chr1:10583',average_depths_dict,mRNAs_object,plot_title=None)
-
-    plt.savefig('/Users/EricWu/Documents/Research/2013/splice_plot/download_tarball/stuff.svg')

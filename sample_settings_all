@@ -1,17 +1,6 @@
 # data source
 [data]
 
-bam_file_paths = '/home/wueric/bam/bam_list.txt'
-vcf_file_path = '/home/wueric/bam/sample.vcf.gz'
-id_mapping_file = '/home/wueric/bam/mapping.txt'
-annotation_file_path = '/home/wueric/bam/annotation.gtf.gz'
-data = '/Users/EricWu/Documents/Research/2013/hive_plot/sample1/sample_data'
-
-
-
-
-
-
 # settings for drawing hive plot
 [hive_plot]
 

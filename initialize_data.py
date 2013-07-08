@@ -4,6 +4,8 @@ import cPickle as pickle
 from lib.ReadDepth import ReadDepth
 from lib.mRNAsObject import mRNAsObject
 import argparse
+import os
+
 
 def average_read_depth_by_genotype(read_depth_dict,vcf_file_name,var_pos):
     '''
@@ -374,9 +376,9 @@ if __name__ == '__main__':
     # argparse stuff
     parser = argparse.ArgumentParser(description='Initialize and pickle alternative splice junction data')
 
-    parser.add_argument(parser.add_argument('--varpos',type=str,required=True,help='string describing position of SNP. should have format chr_name:base_number')
+    parser.add_argument('--varpos',type=str,required=True,help='string describing position of SNP. should have format chr_name:base_number')
 
-    parser.add_argument('--junc',type=str,required=True,help='string representing junction. should have format chr_name:lower_base-upper_base,chr_name:lower_base-upper_base, where lower_base and upper_base represent possible intronic regions')
+    parser.add_argument('--junc',type=str,required=True,help="string representing junction. should have format chr_name:lower_base-upper_base,chr_name:lower_base-upper_base, where lower_base and upper_base represent possible intronic regions")
 
     parser.add_argument('--vcf',type=str,required=True,help='location of the vcf file')
 
@@ -384,13 +386,14 @@ if __name__ == '__main__':
 
     parser.add_argument('--mf',type=str,required=True,help='location of the map file')
 
-    parser.add_argument('-o','--output',type=str,required=True,help='location of output .p file')
-
     args = parser.parse_args()
 
     genotype_averages_dict, data_frame = calculate_average_expression_and_data_frame(args.varpos,args.junc,args.vcf,args.gtf,args.mf)
 
-    pickle_file = open(args.output,'wb')
+
+    output_file_path = '{0}/plots/{1}@{2}.p'.format(os.path.dirname(__file__),args.varpos,args.junc)
+
+    pickle_file = open(output_file_path,'wb')
     pickle.dump(args.varpos,pickle_file)
     pickle.dump(genotype_averages_dict,pickle_file)
     pickle.dump(data_frame,pickle_file)

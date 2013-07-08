@@ -78,7 +78,6 @@ def default_struct_settings():
     struct_settings['horiz_label_size']=15
     struct_settings['horiz_label_spacing']=20
 
-    struct_settings['horiz_axis_title']='title'
     struct_settings['horiz_axis_title_size']=30
     
     struct_settings['use_vertical_ticks']=True
@@ -88,13 +87,10 @@ def default_struct_settings():
 
 
     struct_settings['include_key'] = False
-    struct_settings['key_title'] = 'Title'
     struct_settings['key_title_size'] = 10
     struct_settings['key_position'] = [800,200]
-    struct_settings['key_labels'] = None
     struct_settings['key_font_size'] = 15
     struct_settings['key_text_color'] = [0,0,0]
-    struct_settings['use_custom_key_labels']=False
 
     return struct_settings
 
@@ -121,7 +117,7 @@ def default_sashimi_settings():
     return sashimi_settings
 
 
-def parse_hive_plot_settings(config,data):
+def parse_hive_plot_settings(config):
 
     ''' Parses custom settings for a hive plot from a configuration file. Returns a dictionary containing all
     of the settings
@@ -150,18 +146,14 @@ def parse_hive_plot_settings(config,data):
     BOOLEAN_PARAMS = {'tick_marks',
                         'tick_labels',
                         'draw_bars',
-                        'use_custom_axis_labels',
                         'include_key',
                         'draw_hive_plot'}
     OTHER_PARAMS = {'axis_colors',
                         'bezier_colors',
                         'axis_angles',
-                        'data',
                         'custom_scale',
-                        'axis_labels',
                         'axis_label_radius',
                         'key_position',
-                        'key_title',
                         'key_text_color',
                         'key_position',
 			'output_file_path'}
@@ -176,28 +168,13 @@ def parse_hive_plot_settings(config,data):
             settings[option] = ast.literal_eval(config.get('hive_plot',option))
 
     # check to make sure that the settings have the right format and preprocess them
-    number_of_junctions = len(data.columns[1:])
-    number_of_genotypes = len(set(data.icol(0)))
-
-    if 'axis_angles' not in settings:
-        axis_angles = map(lambda x: 360 / number_of_junctions, list(range(number_of_junctions)))
-        settings['axis_angles'] = axis_angles
-    elif type(settings['axis_angles']) is not list or len(settings['axis_angles']) != number_of_junctions:
-        print 'Invalid number of elements in axis_angles'
+    try:
+        for i in range(len(colorified)):
+            colorified[i] = RGB.from_list(settings['bezier_colors'][i])
+        settings['bezier_colors'] = colorified
+    except Exception:
+        print 'Invalid colors in bezier_colors'
         sys.exit(1)
-
-    if len(settings['bezier_colors']) < number_of_genotypes:
-        print 'Invalid number of elements in bezier_colors'
-        sys.exit(1)
-    else:
-        colorified = [None] * len(settings['bezier_colors'])
-        try:
-            for i in range(len(colorified)):
-                colorified[i] = RGB.from_list(settings['bezier_colors'][i])
-            settings['bezier_colors'] = colorified
-        except Exception:
-            print 'Invalid colors in bezier_colors'
-            sys.exit(1)
 
     try:
         settings['axis_colors'] = RGB.from_list(settings['axis_colors'])
@@ -208,9 +185,6 @@ def parse_hive_plot_settings(config,data):
     if settings['custom_scale']:
         if type(settings['custom_scale']) is not list:
             print 'custom_scale must be list'
-            sys.exit(1)
-        if len(settings['custom_scale']) < number_of_genotypes:
-            print 'Invalid number of elements in custom_scale'
             sys.exit(1)
         for item in settings['custom_scale']:
             if type(item) is not list:
@@ -223,24 +197,8 @@ def parse_hive_plot_settings(config,data):
                 print 'Invalid boundary in custom_scale'
                 sys.exit(1)
 
-    if settings['use_custom_axis_labels']:
-        if type(settings['axis_labels']) is not list:
-            print 'axis_labels must be a list'
-            sys.exit(1)
-        if type(settings['axis_label_radius']) is not list:
-            print 'axis_label_radius must be a list'
-            sys.exit(1)
-        if len(settings['axis_labels']) != number_of_junctions:
-            print 'Invalid number of axis_labels'
-            sys.exit(1)
-        if len(settings['axis_label_radius']) != number_of_junctions:
-            print 'Invalid number of elements in axis_label_radius'
-            sys.exit(1)
 
     if settings['include_key']:
-        if type(settings['key_title']) is not str:
-            print 'key_title must be string'
-            sys.exit(1)
         if type(settings['key_position']) is not list:
             print 'key_position must be list'
             sys.exit(1)
@@ -265,7 +223,7 @@ def parse_hive_plot_settings(config,data):
     
     return settings
 
-def parse_struct_plot_settings(config_parser,data):
+def parse_struct_plot_settings(config_parser):
     ''' Parses custom settings for a structure plot from a configuration file. Returns a dictionary containing
     all of the settings
 
@@ -302,8 +260,6 @@ def parse_struct_plot_settings(config_parser,data):
                         'colors',
                         'axis_color',
                         'output_file_path',
-                        'key_title',
-                        'key_labels',
                         'key_text_color',
                         'key_position'}
 
@@ -349,12 +305,6 @@ def parse_struct_plot_settings(config_parser,data):
             settings['key_text_color'] = RGB.from_list(settings['key_text_color'])
         except Exception:
             print 'Invalid color in key_text_color'
-            sys.exit(1)
-
-        if settings['key_labels'] == None:
-            settings['key_labels'] = data.columns[1:]
-        elif len(settings['key_labels']) != len(data.columns[1:]):
-            print 'Incorrect number of labels for key'
             sys.exit(1)
 
         if len(settings['key_position']) != 2:
@@ -423,20 +373,23 @@ def parse_settings(settings_file):
     hive_plot_settings is a dictionary containing the settings for the hive plot
     struct_plot_settings is a dictionary containing the settings for the structure plot
     """
-
-    config = ConfigParser.ConfigParser()
-    print 'Reading settings from {0}...'.format(settings_file)
-    config.read(settings_file)
-
-    data = create_data_frame_from_file(ast.literal_eval(config.get('data','data')))
-
-    hive_plot_settings = parse_hive_plot_settings(config,data)
-    struct_plot_settings = parse_struct_plot_settings(config,data)
+    try:
+        config = ConfigParser.ConfigParser()
+        print 'Reading settings from {0}...'.format(settings_file)
+        config.read(settings_file)
 
 
-    print 'Done reading settings.'
-    return data, hive_plot_settings, struct_plot_settings
+        hive_plot_settings = parse_hive_plot_settings(config)
+        struct_plot_settings = parse_struct_plot_settings(config)
 
+        sashimi_plot_settings = parse_sashimi_settings(config) 
+
+
+        print 'Done reading settings.'
+        return hive_plot_settings, struct_plot_settings, sashimi_plot_settings
+    except IOError:
+        print '{0} is not a valid file path'
+        sys.exit(1)
 
 
 
