@@ -86,7 +86,7 @@ def draw_hive_plot(file_name,
     f1.write('<?xml version="1.0"?>\n')
     f1.write('<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n')
 
-    f1.write('<svg width="{0}px" height="{0}px" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">\n'.format(int(dimension)))
+    f1.write('<svg width="{0}in" height="{0}in" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 {0} {0}">\n'.format(int(dimension)))
 
     f1.write('<g transform="translate({0},{0}) scale(1, -1)">\n'.format((dimension // 2)))
 
@@ -273,7 +273,7 @@ def draw_population_structure_graph(output_file_name,
     # set up svg
     f1.write('<?xml version="1.0"?>\n')
     f1.write('<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n')
-    f1.write('<svg width="{0}px" height="{1}px" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">\n'.format(int(width),int(height)))
+    f1.write('<svg width="{0}in" height="{1}in" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 {0} {1}">\n'.format(width,height))
 
     # flip to cartesian coordinates, (0,0) is at bottom left corner
     f1.write('<g transform="translate(0,{0}) scale(1,-1)">\n'.format(height))

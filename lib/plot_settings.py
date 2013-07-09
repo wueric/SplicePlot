@@ -130,8 +130,8 @@ def parse_hive_plot_settings(config):
 
     settings = default_hive_settings()
     
-    INTEGER_PARAMS = set(['dimension'])
-    FLOAT_PARAMS = set(['axis_subdivision',
+    FLOAT_PARAMS = set(['dimension',
+                        'axis_subdivision',
                         'tick_label_font_size',
                         'tick_label_distance',
                         'axis_start_radius',
@@ -158,9 +158,7 @@ def parse_hive_plot_settings(config):
                         'key_position'])
 
     for option in config.options('hive_plot'):
-        if option in INTEGER_PARAMS:
-            settings[option] = config.getint('hive_plot',option)
-        elif option in FLOAT_PARAMS:
+        if option in FLOAT_PARAMS:
             settings[option] = config.getfloat('hive_plot',option)
         elif option in BOOLEAN_PARAMS:
             settings[option] = config.getboolean('hive_plot',option)
@@ -225,13 +223,13 @@ def parse_struct_plot_settings(config_parser):
     
     settings = default_struct_settings()
 
-    INTEGER_PARAMS = set(['plot_width',
+    FLOAT_PARAMS = set(['plot_width',
                         'plot_height',
                         'left_margin',
                         'right_margin',
                         'top_margin',
-                        'bottom_margin'])
-    FLOAT_PARAMS = set(['axis_thickness',
+                        'bottom_margin',
+                        'axis_thickness',
                         'tick_length',
                         'horiz_label_size',
                         'horiz_label_spacing',
@@ -255,9 +253,7 @@ def parse_struct_plot_settings(config_parser):
 
 
     for option in config_parser.options('struct_plot'):
-        if option in INTEGER_PARAMS:
-            settings[option] = config_parser.getint('struct_plot',option)
-        elif option in FLOAT_PARAMS:
+        if option in FLOAT_PARAMS:
             settings[option] = config_parser.getfloat('struct_plot',option)
         elif option in BOOLEAN_PARAMS:
             settings[option] = config_parser.getboolean('struct_plot',option)
@@ -300,7 +296,7 @@ def parse_struct_plot_settings(config_parser):
 
         for i in range(2):
             try:
-                settings['key_position'][i] = int(settings['key_position'][i])
+                settings['key_position'][i] = float(settings['key_position'][i])
             except Exception:
                 print 'Elements in key_position must be numbers'
                 sys.exit(1)

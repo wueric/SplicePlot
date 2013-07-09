@@ -62,5 +62,5 @@ def draw_multiline_text(svg_file,label,x,y,size,color=RGB(0,0,0)):
     svg_file.write('</text>')
 
 def draw_rectangle(svg_file,x,y,x_dim,y_dim,fill_color):
-    svg_rect = '<rect x="{0}" y="{1}" width="{2}" height="{3}" style="fill:{4}; stroke-width:1; stroke:{4}"/>\n'.format(x,y,x_dim,y_dim,fill_color);
+    svg_rect = '<rect x="{0}" y="{1}" width="{2}" height="{3}" style="fill:{4}; stroke-width:0; stroke:{4}"/>\n'.format(x,y,x_dim,y_dim,fill_color);
     svg_file.write(svg_rect)
