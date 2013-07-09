@@ -201,8 +201,7 @@ def initialize_read_depths_and_determine_exons(junction_name,gtf_file_name,bam_l
     
     chrom = junctions_list[0].split(':')[0]
 
-    # figure out the shared site
-
+    # figure out the shared splice site
     splice_junc_coordinate_list = []
     shared_site = None
 
@@ -244,6 +243,10 @@ def initialize_read_depths_and_determine_exons(junction_name,gtf_file_name,bam_l
                 minimum_coordinate = exon.low
             if exon.high > maximum_coordinate:
                 maximum_coordinate = exon.high
+
+    if minimum_coordinate == float('inf') or maximum_coordinate == float('-inf'):
+        print 'The coordinates given in {0} do not match known exons in the annotation'.format(junction_name)
+        raise Exception
 
     read_depth_dict = {}
     total_depth = ReadDepth.create_blank()
@@ -390,19 +393,21 @@ if __name__ == '__main__':
     parser.add_argument('--output',type=str,required=False,default=None,help='location of output pickle file. Optional parameter')
 
     args = parser.parse_args()
+    try:
+        genotype_averages_dict, data_frame, mRNA_info_object = calculate_average_expression_and_data_frame(args.varpos,args.junc,args.vcf,args.gtf,args.mf)
 
-    genotype_averages_dict, data_frame, mRNA_info_object = calculate_average_expression_and_data_frame(args.varpos,args.junc,args.vcf,args.gtf,args.mf)
+        output_file_path = args.output
+        if args.output == None:
+            output_file_path = '{0}/pickle_files/{1}@{2}.p'.format(os.path.dirname(os.path.abspath(__file__)),args.varpos,args.junc)
 
-    output_file_path = args.output
-    if args.output == None:
-        output_file_path = '{0}/pickle_files/{1}@{2}.p'.format(os.path.dirname(os.path.abspath(__file__)),args.varpos,args.junc)
+        # pickle the data
+        pickle_file = open(output_file_path,'wb')
+        pickle.dump(args.varpos,pickle_file)
+        pickle.dump(args.junc,pickle_file)
+        pickle.dump(genotype_averages_dict,pickle_file)
+        pickle.dump(mRNA_info_object,pickle_file)
+        pickle.dump(data_frame,pickle_file)
 
-    # pickle the data
-    pickle_file = open(output_file_path,'wb')
-    pickle.dump(args.varpos,pickle_file)
-    pickle.dump(args.junc,pickle_file)
-    pickle.dump(genotype_averages_dict,pickle_file)
-    pickle.dump(mRNA_info_object,pickle_file)
-    pickle.dump(data_frame,pickle_file)
-
-    pickle_file.close()
+        pickle_file.close()
+    except:
+        print 'Failed'

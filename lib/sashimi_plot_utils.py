@@ -431,24 +431,3 @@ def draw_sashimi_plot(output_file_path,settings,var_pos,average_depths_dict,mRNA
     plot_density(settings,var_pos,average_depths_dict,mRNAs_object,plot_title)
     plt.savefig(output_file_path)
 
-# debugging code
-if __name__ == '__main__':
-
-    sashimi_settings = {}
-
-    sashimi_settings['width'] = 7
-    sashimi_settings['height'] = 5
-
-    sashimi_settings['intron_scale'] = 1
-    sashimi_settings['exon_scale'] = 1
-    sashimi_settings['colors'] = ["#CC0011","#FF8800","#FFCC33"] 
-    sashimi_settings['ymax'] = 300
-    sashimi_settings['number_junctions'] = True
-    sashimi_settings['resolution'] = 0.5
-    sashimi_settings['junction_log_base'] = 10
-    sashimi_settings['reverse_minus'] = False
-    sashimi_settings['font_size'] = 6
-    sashimi_settings['nyticks'] = 3
-    sashimi_settings['nxticks'] = 4
-    sashimi_settings['show_ylabel'] = True
-    sashimi_settings['show_xlabel'] = True
