@@ -1,0 +1,205 @@
+############ settings for drawing hive plot #################
+[hive_plot]
+
+# Whether or not a hive plot will be drawn
+draw_hive_plot = True
+
+# size of the plot in inches
+dimension = 8
+
+# tick mark settings
+# boolean determining whether tick marks are drawn
+tick_marks = True
+
+# font size of the tick labels in inches. Set to 0 if you do not want tick labels
+tick_label_font_size = 0.1
+
+# distance of the tick labels from the axis in inches
+tick_label_distance = 0.15
+
+# height of each tick in inches
+tick_height = 0.08
+
+# thickness (weight) of each tick in inches
+tick_thickness = 0.01
+
+# axis settings
+# start radius of axis in inches. Measured from the center of the plot
+axis_start_radius = 0.3
+
+
+# end radius of axis in inches. Measured from the center of the plot
+axis_end_radius = 3
+
+# string containing hexadecimal value for the axis color
+axis_colors = '#000000'
+
+
+# list containing the radii for each of the axis labels in inches, measured from center of the plot
+axis_label_radius = [3.5,3.5,3.5]
+
+# determines the font size of the axis labels, in inches
+axis_label_size = 0.15
+
+# determines the thickness of the axes, in inches
+axis_thickness = 0.05
+
+# determines the size of the subdivisions of the axis for tick marks
+axis_subdivision = 0.25
+
+# list containing the angles of each axis, in degrees. 0 is 3 o'clock
+axis_angles = [90,210,330]
+
+# list containing lists which determine the lower and upper bounds for each axis
+# set to [] if you do not want to use a custom scale
+custom_scale = [[0,1],[0,1],[0,1]]
+
+# bezier curve settings
+# list containing hexadecimal strings for the colors of the bezier curves
+bezier_colors = ['#FF8000','#00C866','#3399FF']
+
+# determines the thickness of the beziers, in inches
+bezier_thickness = 0.005
+
+# key settings
+# boolean determining whether a key should be drawn
+include_key = True
+
+# determines the font size of the key title, in inches
+key_title_size = .20
+
+# 2-element list containing the cartesian coordinates of the key, in inches. (0,0) is the center of the plot
+key_position = [1,2]
+
+# determines the font size of the text in the key, in inches
+key_font_size = .15
+
+# hexadecimal string determining the color of the font in the plot key
+key_text_color = '#000000'
+
+
+########### settings for structure plot ###################
+[struct_plot]
+
+# basic settings
+draw_struct_plot = True
+
+# dimensions in inches
+plot_width=10
+plot_height=4
+
+# amount of white space to leave on the left side, in inches
+left_margin=1
+
+# amount of white space to leave on the right side of the plot in inches.
+# Note that the key, if drawn, will be in this white space
+right_margin=3
+
+# amount of white space to leave on the top, in inches
+top_margin=0.5
+
+# amount of white space to leave on the bottom, in inches
+bottom_margin=1
+
+# colors for each junction. Must have as many colors as there are junctions in the data
+colors=["#CC0011","#FF8800","#FFCC33"] 
+
+# color for the axis
+axis_color='#000000'
+
+# thickness for the axes, in inches
+axis_thickness=0.02
+
+# length of each tick mark in inches. Set to 0 if you do not want tick marks
+tick_length=0.1
+
+# size of the labels for the horizontal (x) axis in inches. Set to 0 if you do not want labels
+horiz_label_size=0.20
+
+# distance that horizontal axis labels are below the x axis, in inches
+horiz_label_spacing=0.25
+
+# font size for horizontal axis title in inches. Set to 0 if you do not want horizontal axis title
+horiz_axis_title_size=0.27
+
+# distance that horizontal axis title is below the x axis, in inches
+horiz_axis_title_spacing=0.50
+
+# determines whether or not tick marks are drawn for the vertical (y) axis
+use_vertical_ticks=True
+
+# spacing between tick marks on the vertical axis. must be between 0 and 1
+vertical_tick_spacing=0.2
+
+# font size for vertical axis labels, in inches. Set to 0 if you do not want labels
+vert_label_size=0.15
+
+# distance that vertical axis labels are drawn away from the vertical axis in inches
+vert_label_spacing=0.20
+
+
+# settings for structure plot key
+include_key = True
+
+# determines the font size of the key title. Use 0 if you do not want title
+key_title_size = 0
+
+# 2-element list containing the cartesian coordinates of the key in inches. (0,0) is the bottom left corner of the plot
+key_position = [7.50,2.75]
+
+# list containing the labels for each color in the key. Set to None if you want to use the default labels
+key_labels = None
+
+# determines the font size of the text in the key, in inches
+key_font_size = 0.15
+
+# hexadecimal string for the color of the font in the plot key
+key_text_color = '#000000'
+
+######### settings for sashimi plot ##############
+[sashimi_plot]
+
+draw_sashimi_plot = True
+
+# width of the sashimi plot, in inches
+width = 7
+
+# height of the sashimi plot, in inches
+height = 5
+
+# scaling factor for intronic regions. A larger intron_scale makes the intronic regions smaller
+intron_scale = 1
+
+# scaling factor for exonic regions. A larger exon_scale makes the exonic regions smaller
+exon_scale = 1
+
+# colors for the different pileups, in hex
+colors = ["#CC0011","#FF8800","#FFCC33"]
+
+# maximum value on the y-scale
+ymax = 300
+
+# determines whether the average junction-spanning read counts are shown
+number_junctions=True
+
+resolution=0.5
+
+# determines the thickness of the junction-spanning beziers
+junction_log_base = 10
+
+# determines whether to reverse the plot if features are on the - strand
+reverse_minus = False
+
+font_size = 6
+
+# number of ticks on the y-axis
+nyticks = 3
+
+# number of ticks on the x-axis
+nxticks = 4
+
+# determines whether y-axis labels are drawn
+show_ylabel = True
+
+# determines whether x-axis labels are drawn
+show_xlabel = True

@@ -164,8 +164,6 @@ def plot_density(settings,event,read_depths_dict,mRNA_object,plot_title=None):
     show_xlabel = settings["show_xlabel"]
     if plot_title is None:
         plot_title = event
-    print "Using intron scale ", intron_scale
-    print "Using exon scale ", exon_scale
 
     # Always show y-axis for read densities for now
     showYaxis = True

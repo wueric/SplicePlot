@@ -32,16 +32,19 @@ if __name__ == '__main__':
     plot_name_stem = plot_name_stem[len(plot_name_stem)-1]
 
     if hive_plot_settings['draw_hive_plot']:
+        print 'Drawing hive plot...'
         draw_hive_plot(file_name='{0}/plots/{1}_hive.svg'.format(os.path.dirname(os.path.abspath(__file__)),plot_name_stem),
                 data=data_frame,
                 hive_plot_settings=hive_plot_settings)
 
     if struct_plot_settings['draw_struct_plot']:
+        print 'Drawing structure plot...'
         draw_population_structure_graph(output_file_name='{0}/plots/{1}_structure.svg'.format(os.path.dirname(os.path.abspath(__file__)),plot_name_stem),
                                     data=data_frame,
                                     struct_plot_settings=struct_plot_settings)
 
     if sashimi_plot_settings['draw_sashimi_plot']:
+        print 'Drawing sashimi plot...'
         draw_sashimi_plot(output_file_path='{0}/plots/{1}_sashimi.svg'.format(os.path.dirname(os.path.abspath(__file__)),plot_name_stem),
                     settings=sashimi_plot_settings,
                     var_pos=varpos,
@@ -49,4 +52,4 @@ if __name__ == '__main__':
                     mRNAs_object=mRNA_info_object)
     
 
-
+    print 'Done!'
