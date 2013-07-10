@@ -43,6 +43,7 @@ if __name__ == '__main__':
         print 'Drawing structure plot...'
         draw_population_structure_graph(output_file_name='{0}/plots/{1}_structure.svg'.format(os.path.dirname(os.path.abspath(__file__)),plot_name_stem),
                                     data=data_frame,
+                                    genotypes_ordering=ordered_genotypes_list,
                                     struct_plot_settings=struct_plot_settings)
 
     if sashimi_plot_settings['draw_sashimi_plot']:

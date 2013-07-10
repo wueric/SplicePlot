@@ -202,6 +202,7 @@ def polar_to_cartesian(radius,degrees):
 
 def draw_population_structure_graph(output_file_name,
                                     data,
+                                    genotypes_ordering,
                                     struct_plot_settings):
     """ Draws a structure plot from the splicing data, broken up by genotype
 
@@ -256,7 +257,18 @@ def draw_population_structure_graph(output_file_name,
     key_text_color=struct_plot_settings['key_text_color']
 
 
-    sorted_data = data.sort_index(axis=0,by=[data.columns[0]],ascending=[True],inplace=False)
+    # sort the data frame so that homozygous reference is first, heterozygous is in the middle, etc
+    indiv_and_genotypes = data.iloc[:,0]
+    indivs_by_genotype = {}
+    for indiv_id, genotype in indiv_and_genotypes.iteritems():
+        if genotype not in indivs_by_genotype:
+            indivs_by_genotype[genotype] = []
+        indivs_by_genotype[genotype].append(indiv_id)
+
+    new_index_order = []
+    for genotype in genotypes_ordering:
+        new_index_order.extend(indivs_by_genotype[genotype])
+    sorted_data = data.reindex(index=new_index_order)
 
     # assign colors for each junction
     color_lookup = {}

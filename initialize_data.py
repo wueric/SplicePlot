@@ -74,7 +74,7 @@ def average_read_depth_by_genotype(read_depth_dict,vcf_file_name,var_pos):
                 genotype_key = ''.join(genotype_list_bases)
 
                 # update the count on the number of times a genotype occurs
-                possible_genotype_buckets[genotype_key] += 1
+                possible_genotypes_buckets[genotype_key] += 1
 
                 if genotype_key not in read_depths_by_genotype:
                     read_depths_by_genotype[genotype_key] = []
@@ -94,7 +94,7 @@ def average_read_depth_by_genotype(read_depth_dict,vcf_file_name,var_pos):
 
 
             # filter the list of possible genotypes so that only the ones that occur in the data are present
-            filtered_genotypes_list = filter(lambda x: possible_genotype_buckets[x] > 0, possible_genotypes)
+            filtered_genotypes_list = filter(lambda x: possible_genotypes_buckets[x] > 0, possible_genotypes)
 
             return average_read_depths_dict, genotype_by_id, filtered_genotypes_list
 
@@ -336,7 +336,7 @@ def initialize_read_depths_and_determine_exons(junction_name,gtf_file_name,bam_l
 
 
 
-def create_data_frame(read_depth_dict,junction_name,var_pos,genotype_lookup_dict):
+def create_data_frame(read_depth_dict,junction_name,var_pos,genotype_lookup_dict,filtered_genotypes_list):
 
     '''
         create_data_frame creates a pandas.DataFrame object in the format required by the hive
@@ -409,7 +409,7 @@ def calculate_average_expression_and_data_frame(var_pos,junction_name,vcf,annota
     genotype_averages_dict, genotype_by_id, filtered_genotypes_list = average_read_depth_by_genotype(new_read_depths_dict,vcf,var_pos)
 
 
-    data_frame = create_data_frame(new_read_depths_dict,junction_name,var_pos,genotype_by_id)
+    data_frame = create_data_frame(new_read_depths_dict,junction_name,var_pos,genotype_by_id,filtered_genotypes_list)
 
     return genotype_averages_dict, data_frame, mRNA_info_object, filtered_genotypes_list
 
