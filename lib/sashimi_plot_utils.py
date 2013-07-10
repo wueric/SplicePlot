@@ -147,7 +147,7 @@ def plot_density_single(read_depth_object, sample_label,
 
 
 # Plot density for a series of bam files.
-def plot_density(settings,event,read_depths_dict,mRNA_object,plot_title=None):
+def plot_density(settings,event,read_depths_dict,mRNA_object,ordered_genotypes_list,plot_title=None):
 
     intron_scale = settings["intron_scale"]
     exon_scale = settings["exon_scale"]
@@ -193,7 +193,9 @@ def plot_density(settings,event,read_depths_dict,mRNA_object,plot_title=None):
 
     labels_list = []
 
-    for i, (group_genotype, average_read_depth) in enumerate(read_depths_dict.items()):
+    for i, group_genotype in enumerate(ordered_genotypes_list):
+        average_read_depth = read_depths_dict[group_genotype]
+
         if colors is not None:
             color = colors[i]
         else:
@@ -401,7 +403,7 @@ def cubic_bezier(pts, t):
     return p0 * (1 - t)**3 + 3 * t * p1 * (1 - t) ** 2 + \
         3 * t**2 * (1 - t) * p2 + t**3 * p3
 
-def draw_sashimi_plot(output_file_path,settings,var_pos,average_depths_dict,mRNAs_object,plot_title=None):
+def draw_sashimi_plot(output_file_path,settings,var_pos,average_depths_dict,mRNAs_object,ordered_genotypes_list,plot_title=None):
 
     '''
         draw_sashimi_plot draws the complete sashimi plot
@@ -426,6 +428,5 @@ def draw_sashimi_plot(output_file_path,settings,var_pos,average_depths_dict,mRNA
     '''
 
     plt.figure(figsize=[settings['width'],settings['height']])
-    plot_density(settings,var_pos,average_depths_dict,mRNAs_object,plot_title)
+    plot_density(settings,var_pos,average_depths_dict,mRNAs_object,ordered_genotypes_list,plot_title)
     plt.savefig(output_file_path)
-

@@ -26,6 +26,8 @@ def average_read_depth_by_genotype(read_depth_dict,vcf_file_name,var_pos):
             A dict which maps indiv IDs to genotype. The keys are the indiv IDs, and the values are the
                 corresponding genotypes
 
+            A list of genotypes which occur in the dataset, where homozygous reference is first
+
     '''
 
     chrm = var_pos.split(':')[0]
@@ -49,6 +51,13 @@ def average_read_depth_by_genotype(read_depth_dict,vcf_file_name,var_pos):
 
             alleles_list.extend(alt_alleles)
 
+            # create a list of all possible genotypes, with homozygous reference first
+            # also create buckets to count the number of times each genotype occurs
+            possible_genotypes = ordered_possible_genotypes(alleles_list)
+            possible_genotypes_buckets = {}
+            for genotype in possible_genotypes:
+                possible_genotypes_buckets[genotype] = 0
+
             read_depths_by_genotype = {}
             genotype_by_id = {}
 
@@ -56,14 +65,16 @@ def average_read_depth_by_genotype(read_depth_dict,vcf_file_name,var_pos):
                 indiv_genotype_string = variant[indiv_id]['GT'][0]
 
 
-                indiv_genotype_list_numeric = map(int,[indiv_genotype_string[0], indiv_genotype_string[2]])
+                indiv_genotype_list_numeric = sorted(map(int,[indiv_genotype_string[0], indiv_genotype_string[2]]))
                 
                 genotype_list_bases = []
                 for item in indiv_genotype_list_numeric:
                     genotype_list_bases.append(alleles_list[item])
-                genotype_list_bases.sort()
-            
+                
                 genotype_key = ''.join(genotype_list_bases)
+
+                # update the count on the number of times a genotype occurs
+                possible_genotype_buckets[genotype_key] += 1
 
                 if genotype_key not in read_depths_by_genotype:
                     read_depths_by_genotype[genotype_key] = []
@@ -81,7 +92,11 @@ def average_read_depth_by_genotype(read_depth_dict,vcf_file_name,var_pos):
                 average_depth = total_depth.divide_by_constant(len(depth_list))
                 average_read_depths_dict[genotype] = average_depth
 
-            return average_read_depths_dict, genotype_by_id
+
+            # filter the list of possible genotypes so that only the ones that occur in the data are present
+            filtered_genotypes_list = filter(lambda x: possible_genotype_buckets[x] > 0, possible_genotypes)
+
+            return average_read_depths_dict, genotype_by_id, filtered_genotypes_list
 
         if variant == None:
             print 'There is no variant at {0}'.format(var_pos)
@@ -90,6 +105,25 @@ def average_read_depth_by_genotype(read_depth_dict,vcf_file_name,var_pos):
     except IOError:
         print 'There is no .vcf file at {0}'.format(vcf_file_name)
         raise Exception
+
+
+def ordered_possible_genotypes(alleles_list):
+    '''
+        ordered_possible_genotypes takes a list of alleles and outputs a list of all the possible genotypes, where the
+            homozygous reference genotype is first
+
+        alleles_list is a list of all of the possible alleles. The reference allele must be the first element in the list
+
+        return values:
+            a list of all possible genotypes
+
+    '''
+    possible_genotypes_list = []
+    for i in range(len(alleles_list)):
+        for j in range(i,len(alleles_list)):
+            genotype_string = alleles_list[i] + alleles_list[j]
+            possible_genotypes_list.append(genotype_string)
+    return possible_genotypes_list
 
 
     
@@ -372,12 +406,12 @@ def calculate_average_expression_and_data_frame(var_pos,junction_name,vcf,annota
     for indiv_id, read_depth_object in read_depths_dict.items():
         new_read_depths_dict[indiv_id] = read_depth_object.filter_junctions_dict_for_event(junction_name)
 
-    genotype_averages_dict, genotype_by_id = average_read_depth_by_genotype(new_read_depths_dict,vcf,var_pos)
+    genotype_averages_dict, genotype_by_id, filtered_genotypes_list = average_read_depth_by_genotype(new_read_depths_dict,vcf,var_pos)
 
 
     data_frame = create_data_frame(new_read_depths_dict,junction_name,var_pos,genotype_by_id)
 
-    return genotype_averages_dict, data_frame, mRNA_info_object
+    return genotype_averages_dict, data_frame, mRNA_info_object, filtered_genotypes_list
 
 
 if __name__ == '__main__':
@@ -394,7 +428,7 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
     try:
-        genotype_averages_dict, data_frame, mRNA_info_object = calculate_average_expression_and_data_frame(args.varpos,args.junc,args.vcf,args.gtf,args.mf)
+        genotype_averages_dict, data_frame, mRNA_info_object, filtered_genotypes_list = calculate_average_expression_and_data_frame(args.varpos,args.junc,args.vcf,args.gtf,args.mf)
 
         output_file_path = args.output
         if args.output == None:
@@ -407,6 +441,7 @@ if __name__ == '__main__':
         pickle.dump(genotype_averages_dict,pickle_file)
         pickle.dump(mRNA_info_object,pickle_file)
         pickle.dump(data_frame,pickle_file)
+        pickle.dump(filtered_genotypes_list,pickle_file)
 
         pickle_file.close()
     except:

@@ -26,6 +26,8 @@ if __name__ == '__main__':
     genotype_averages_dict = pickle.load(pickle_file)
     mRNA_info_object = pickle.load(pickle_file)
     data_frame = pickle.load(pickle_file)
+    ordered_genotypes_list = pickle.load(pickle_file)
+
     pickle_file.close()
 
     plot_name_stem = args.pickle.split('/')
@@ -49,7 +51,8 @@ if __name__ == '__main__':
                     settings=sashimi_plot_settings,
                     var_pos=varpos,
                     average_depths_dict=genotype_averages_dict,
-                    mRNAs_object=mRNA_info_object)
+                    mRNAs_object=mRNA_info_object,
+                    ordered_genotypes_list=ordered_genotypes_list)
     
 
     print 'Done!'
