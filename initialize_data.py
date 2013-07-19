@@ -7,6 +7,74 @@ import argparse
 import os
 
 
+class VCFLine:
+    def __init__(self,VCF_name,region):
+        '''
+            VCF_name is the name of the gzipped vcf file
+            region is the position of the SNP, in format chr4:12345
+        '''
+        VCF_object = pysam.Tabixfile(VCF_name)
+
+        VCF_header = list(VCF_object.header)
+        last_header_line = VCF_header[len(VCF_header)-1]
+        indiv_ids = last_header_line.split()[9:]
+
+        region_list = region.split(':')
+
+        self.contig = region_list[0]
+        self.position = int(region_list[1])
+        self.id = None
+        self.ref = None
+        self.alt = None
+        self.genotype_calls = {}
+        
+        
+        feature_iterator = VCF_object.fetch(region)
+        for feature in feature_iterator:
+            vcf_line_array = feature.strip('\n').split()
+            
+            contig_name = vcf_line_array[0]
+            position = int(vcf_line_array[1])
+            if contig_name == self.contig and position == self.position:
+                self.id = vcf_line_array[2]
+                self.ref = vcf_line_array[3]
+                self.alt = filter(lambda x: x != '.', vcf_line_array[4].split(','))
+                
+                genotype_calls_list = vcf_line_array[9:]
+
+                for i, indiv_id in enumerate(indiv_ids):
+                    self.genotype_calls[indiv_id] = genotype_calls_list[i]
+                
+                break
+
+        if self.id == None:
+            raise Exception, "There is no variant at {0}".format(region)
+                
+
+    def __getitem__(self,key):
+        try:
+            return self._determine_genotype_bases(self.genotype_calls[key])
+        except KeyError:
+            return None
+
+    def alleles_list(self):
+        alleles = [self.ref]
+        alleles.extend(self.alt)
+        return alleles
+
+    def _determine_genotype_bases(self,genotype_string):
+        calls = genotype_string.split(':')[0]
+        calls_as_numeric = None
+        if '|' in calls:
+            calls_as_numeric = sorted(map(int,calls.split('|')))
+        else:
+            calls_as_numeric = sorted(map(int,calls.split('/')))
+
+        genotype_string = ''.join(map(lambda x: self.alleles_list()[x],calls_as_numeric))
+        return genotype_string
+        
+        
+
 def average_read_depth_by_genotype(read_depth_dict,vcf_file_name,var_pos):
     '''
         average_read_depth_by_genotype averages the ReadDepth objects in read_depth_dict based on the genotype
@@ -45,7 +113,7 @@ def average_read_depth_by_genotype(read_depth_dict,vcf_file_name,var_pos):
         # the outer for loop should run at most once
         variant = None
         for variant in variant_line:
-
+			
             alleles_list = list(variant.ref)
             alt_alleles = variant.alt
 
