@@ -66,7 +66,7 @@ class VCFLine:
         alleles_list = self.alleles_list()
         for i in range(len(alleles_list)):
             for j in range(i,len(alleles_list)):
-                genotypes_list.append('{0}{1}'.format(alleles_list[i],alleles_list[j])
+                genotypes_list.append('{0}{1}'.format(alleles_list[i],alleles_list[j]))
         return genotypes_list
 
     def _determine_genotype_bases(self,genotype_string):
@@ -106,7 +106,7 @@ def average_read_depth_by_genotype(read_depth_dict,vcf_file_name,var_pos):
     '''
 
     try:
-        vcf_line = VCFLine(vcf_file_name, region)
+        vcf_line = VCFLine(vcf_file_name,var_pos)
 
         possible_genotypes_bucket_counts = {}
         average_read_depths_dict = {}
@@ -124,11 +124,11 @@ def average_read_depth_by_genotype(read_depth_dict,vcf_file_name,var_pos):
                 possible_genotypes_bucket_counts[indiv_genotype] += 1
                 average_read_depths_dict[indiv_genotype] = average_read_depths_dict[indiv_genotype] + read_depth_object
 
-        for genotype, counts in possible_genotypes_bucket_counts.items()
+        for genotype, counts in possible_genotypes_bucket_counts.items():
             average_read_depths_dict[genotype].divide_by_constant(counts)
 
         filtered_genotypes_list = filter(lambda x: x in genotypes_in_data, vcf_line.genotypes_list())
-        return average_read_depths, genotype_by_id, filtered_genotypes_list
+        return average_read_depths_dict, genotype_by_id, filtered_genotypes_list
 
     except IOError:
         print 'There is no .vcf file at {0}'.format(vcf_file_name)
