@@ -17,7 +17,7 @@ class VCFLine:
 
         VCF_header = list(VCF_object.header)
         last_header_line = VCF_header[len(VCF_header)-1]
-        indiv_ids = last_header_line.split()[9:]
+        self.samples = last_header_line.split()[9:]
 
         region_list = region.split(':')
 
@@ -42,9 +42,8 @@ class VCFLine:
                 
                 genotype_calls_list = vcf_line_array[9:]
 
-                for i, indiv_id in enumerate(indiv_ids):
+                for i, indiv_id in enumerate(self.samples):
                     self.genotype_calls[indiv_id] = genotype_calls_list[i]
-                
                 break
 
         if self.id == None:
@@ -61,6 +60,14 @@ class VCFLine:
         alleles = [self.ref]
         alleles.extend(self.alt)
         return alleles
+
+    def genotypes_list(self):
+        genotypes_list = []
+        alleles_list = self.alleles_list()
+        for i in range(len(alleles_list)):
+            for j in range(i,len(alleles_list)):
+                genotypes_list.append('{0}{1}'.format(alleles_list[i],alleles_list[j])
+        return genotypes_list
 
     def _determine_genotype_bases(self,genotype_string):
         calls = genotype_string.split(':')[0]
@@ -98,103 +105,36 @@ def average_read_depth_by_genotype(read_depth_dict,vcf_file_name,var_pos):
 
     '''
 
-    chrm = var_pos.split(':')[0]
-    position = int(var_pos.split(':')[1])
-
-    vcf_object = pysam.VCF()
-
     try:
-        vcf_object.connect(vcf_file_name)
+        vcf_line = VCFLine(vcf_file_name, region)
 
-        
-        variant_line = list(vcf_object.fetch('{0}:{1}-{1}'.format(chrm,position)))
-        individual_id_list = vcf_object.getsamples()
+        possible_genotypes_bucket_counts = {}
+        average_read_depths_dict = {}
+        genotypes_in_data = set()
+        genotype_by_id = {}
+        for indiv_id, read_depth_object in read_depth_dict.items():
+            indiv_genotype = vcf_line[indiv_id]
+            genotype_by_id[indiv_id] = indiv_genotype
+            genotypes_in_data.add(indiv_genotype)
 
-        # the outer for loop should run at most once
-        variant = None
-        for variant in variant_line:
-			
-            alleles_list = list(variant.ref)
-            alt_alleles = variant.alt
+            if indiv_genotype not in possible_genotypes_bucket_counts:
+                possible_genotypes_bucket_counts[indiv_genotype] = 1
+                average_read_depths_dict[indiv_genotype] = read_depth_object
+            else:
+                possible_genotypes_bucket_counts[indiv_genotype] += 1
+                average_read_depths_dict[indiv_genotype] = average_read_depths_dict[indiv_genotype] + read_depth_object
 
-            alleles_list.extend(alt_alleles)
+        for genotype, counts in possible_genotypes_bucket_counts.items()
+            average_read_depths_dict[genotype].divide_by_constant(counts)
 
-            # create a list of all possible genotypes, with homozygous reference first
-            # also create buckets to count the number of times each genotype occurs
-            possible_genotypes = ordered_possible_genotypes(alleles_list)
-            possible_genotypes_buckets = {}
-            for genotype in possible_genotypes:
-                possible_genotypes_buckets[genotype] = 0
-
-            read_depths_by_genotype = {}
-            genotype_by_id = {}
-
-            for indiv_id, read_depth_object in read_depth_dict.items():
-                indiv_genotype_string = variant[indiv_id]['GT'][0]
-
-
-                indiv_genotype_list_numeric = sorted(map(int,[indiv_genotype_string[0], indiv_genotype_string[2]]))
-                
-                genotype_list_bases = []
-                for item in indiv_genotype_list_numeric:
-                    genotype_list_bases.append(alleles_list[item])
-                
-                genotype_key = ''.join(genotype_list_bases)
-
-                # update the count on the number of times a genotype occurs
-                possible_genotypes_buckets[genotype_key] += 1
-
-                if genotype_key not in read_depths_by_genotype:
-                    read_depths_by_genotype[genotype_key] = []
-
-                read_depths_by_genotype[genotype_key].append(read_depth_object)
-
-                genotype_by_id[indiv_id] = genotype_key
-
-            # compute the averages for each genotype
-            average_read_depths_dict = {}
-            for genotype, depth_list in read_depths_by_genotype.items():
-                total_depth = ReadDepth.create_blank()
-                for read_depth in depth_list:
-                    total_depth += read_depth
-                average_depth = total_depth.divide_by_constant(len(depth_list))
-                average_read_depths_dict[genotype] = average_depth
-
-
-            # filter the list of possible genotypes so that only the ones that occur in the data are present
-            filtered_genotypes_list = filter(lambda x: possible_genotypes_buckets[x] > 0, possible_genotypes)
-
-            return average_read_depths_dict, genotype_by_id, filtered_genotypes_list
-
-        if variant == None:
-            print 'There is no variant at {0}'.format(var_pos)
-            raise Exception
+        filtered_genotypes_list = filter(lambda x: x in genotypes_in_data, vcf_line.genotypes_list())
+        return average_read_depths, genotype_by_id, filtered_genotypes_list
 
     except IOError:
         print 'There is no .vcf file at {0}'.format(vcf_file_name)
         raise Exception
 
 
-def ordered_possible_genotypes(alleles_list):
-    '''
-        ordered_possible_genotypes takes a list of alleles and outputs a list of all the possible genotypes, where the
-            homozygous reference genotype is first
-
-        alleles_list is a list of all of the possible alleles. The reference allele must be the first element in the list
-
-        return values:
-            a list of all possible genotypes
-
-    '''
-    possible_genotypes_list = []
-    for i in range(len(alleles_list)):
-        for j in range(i,len(alleles_list)):
-            genotype_string = alleles_list[i] + alleles_list[j]
-            possible_genotypes_list.append(genotype_string)
-    return possible_genotypes_list
-
-
-    
 def map_indiv_id_to_bam_name(id_map_file):
 
     '''
