@@ -47,7 +47,8 @@ class VCFLine:
                 break
 
         if self.id == None:
-            raise Exception, "There is no variant at {0}".format(region)
+            print "There is no variant at {0}".format(region)
+            raise Exception
                 
 
     def __getitem__(self,key):

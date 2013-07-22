@@ -62,4 +62,4 @@ if __name__ == '__main__':
     except EOFError:
         print 'Pickle file is invalid'
     except Exception:
-        print 'Data in pickle file is invalid'
+        print 'Failed'
