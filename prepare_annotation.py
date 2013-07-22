@@ -47,8 +47,8 @@ class GTFLine:
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Prepare and index .gtf file")
 
-    parser.add_argument('--gtf',type=str,required=True,help='location of gtf file')
-    parser.add_argument('--output',type=str,required=True,help='location of output file')
+    parser.add_argument('gtf',type=str,help='location of gtf file')
+    parser.add_argument('output',type=str,help='location of output file')
 
     args = parser.parse_args()
     

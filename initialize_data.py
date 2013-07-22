@@ -428,8 +428,8 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description='Initialize and pickle alternative splice junction data')
 
-    parser.add_argument('--varpos',type=str,required=True,help='string describing position of SNP. should have format chr_name:base_number')
-    parser.add_argument('--junc',type=str,required=True,help="string representing junction. should have format chr_name:lower_base-upper_base,chr_name:lower_base-upper_base, where lower_base and upper_base represent possible intronic regions")
+    parser.add_argument('varpos',type=str,help='string describing position of SNP. should have format chr_name:base_number')
+    parser.add_argument('junc',type=str,help="string representing junction. should have format chr_name:lower_base-upper_base,chr_name:lower_base-upper_base, where lower_base and upper_base represent possible intronic regions")
     parser.add_argument('--vcf',type=str,required=True,help='location of the vcf file')
     parser.add_argument('--gtf',type=str,required=True,help='location of the gtf file')
     parser.add_argument('--mf',type=str,required=True,help='location of the map file')
