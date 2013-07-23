@@ -115,16 +115,17 @@ def average_read_depth_by_genotype(read_depth_dict,vcf_file_name,var_pos):
         genotypes_in_data = set()
         genotype_by_id = {}
         for indiv_id, read_depth_object in read_depth_dict.items():
-            indiv_genotype = vcf_line[indiv_id]
-            genotype_by_id[indiv_id] = indiv_genotype
-            genotypes_in_data.add(indiv_genotype)
+            if indiv_id in vcf_line:
+                indiv_genotype = vcf_line[indiv_id]
+                genotype_by_id[indiv_id] = indiv_genotype
+                genotypes_in_data.add(indiv_genotype)
 
-            if indiv_genotype not in possible_genotypes_bucket_counts:
-                possible_genotypes_bucket_counts[indiv_genotype] = 1
-                average_read_depths_dict[indiv_genotype] = read_depth_object
-            else:
-                possible_genotypes_bucket_counts[indiv_genotype] += 1
-                average_read_depths_dict[indiv_genotype] = average_read_depths_dict[indiv_genotype] + read_depth_object
+                if indiv_genotype not in possible_genotypes_bucket_counts:
+                    possible_genotypes_bucket_counts[indiv_genotype] = 1
+                    average_read_depths_dict[indiv_genotype] = read_depth_object
+                else:
+                    possible_genotypes_bucket_counts[indiv_genotype] += 1
+                    average_read_depths_dict[indiv_genotype] = average_read_depths_dict[indiv_genotype] + read_depth_object
 
         for genotype, counts in possible_genotypes_bucket_counts.items():
             average_read_depths_dict[genotype].divide_by_constant(counts)
