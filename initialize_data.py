@@ -58,6 +58,9 @@ class VCFLine:
         except KeyError:
             return None
 
+    def __contains__(self,key):
+        return key in self.genotype_calls
+
     def alleles_list(self):
         alleles = [self.ref]
         alleles.extend(self.alt)
