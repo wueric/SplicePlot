@@ -43,7 +43,8 @@ class VCFLine:
                 genotype_calls_list = vcf_line_array[9:]
 
                 for i, indiv_id in enumerate(self.samples):
-                    self.genotype_calls[indiv_id] = genotype_calls_list[i]
+                    if '.' not in genotype_calls_list[i].split(':')[0]:
+                        self.genotype_calls[indiv_id] = genotype_calls_list[i]
                 break
 
         if self.id == None:

@@ -12,7 +12,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Draw hive plots, structure plots, and sashimi plots from genomic data')
 
     parser.add_argument('pickle',type=str,help='Location of pickle file for plotting')
-    parser.add_argument('--settings',type=str,required=True,help='Location of the settings file')
+    parser.add_argument('settings',type=str,help='Location of the settings file')
 
     args = parser.parse_args()
 
