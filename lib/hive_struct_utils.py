@@ -88,7 +88,7 @@ def draw_hive_plot(file_name,
 
     f1.write('<svg width="{0}in" height="{0}in" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 {0} {0}">\n'.format(int(dimension)))
 
-    f1.write('<g transform="translate({0},{0}) scale(1, -1)">\n'.format((dimension // 2)))
+    f1.write('<g transform="translate({0},{0}) scale(1, -1)">\n'.format((dimension / 2)))
 
     # get dimensions of data frame
     data_shape = data.shape

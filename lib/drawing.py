@@ -37,15 +37,15 @@ def draw_line_polar(svg_file,x_origin,y_origin,length,angle,thickness=10,color=R
 
 def draw_bezier(svg_file,x1,y1,x2,y2,controlX,controlY,color=RGB(0,0,0),thickness=1):
 
-    svg_bezier = '<path id = "curve" d = "M{0},{1} Q{4},{5} {2},{3}" fill="none" style="stroke: {6}; stroke-width: {7}"/> \n'.format(x1,y1,x2,y2,controlX,controlY,color,thickness)
+    svg_bezier = '<path d = "M{0},{1} Q{4},{5} {2},{3}" fill="none" style="stroke: {6}; stroke-width: {7}"/> \n'.format(x1,y1,x2,y2,controlX,controlY,color,thickness)
     svg_file.write(svg_bezier)
 
 def draw_text(svg_file,words,x,y,size,angle=0,color=RGB(0,0,0)):
-    svg_text = '<text x="{0}" y="{1}" style="fill:{2}" font-size="{3}" font-family="sans-serif" transform="scale(1,-1) rotate({5},{0},{1})" text-anchor="middle">{4}</text>'.format(x,-y,color,size,words,angle)
+    svg_text = '<text x="{0}" y="{1}" style="fill:{2}" font-size="{3}" font-family="sans-serif" transform="scale(1,-1) rotate({5},{0},{1})" text-anchor="middle">{4}</text>\n'.format(x,-y,color,size,words,angle)
     svg_file.write(svg_text)
 
 def draw_text_left(svg_file,words,x,y,size,angle=0,color=RGB(0,0,0)):
-    svg_text = '<text x="{0}" y="{1}" style="fill:{2}" font-size="{3}" font-family="sans-serif" transform="scale(1,-1) rotate({5},{0},{1})" text-anchor="left">{4}</text>'.format(x,-y,color,size,words,angle)
+    svg_text = '<text x="{0}" y="{1}" style="fill:{2}" font-size="{3}" font-family="sans-serif" transform="scale(1,-1) rotate({5},{0},{1})" text-anchor="left">{4}</text>\n'.format(x,-y,color,size,words,angle)
     svg_file.write(svg_text)
 
 
