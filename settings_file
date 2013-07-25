@@ -177,7 +177,8 @@ intron_scale = 15
 exon_scale = 1
 
 # colors for the different pileups, in hex
-colors = ["#CC0011","#FF8800","#FFCC33"]
+# colors = ["#CC0011","#FF8800","#FFCC33"]
+colors = ['#FF8000','#00C866','#3399FF']
 
 # maximum value on the y-scale
 ymax = 1800

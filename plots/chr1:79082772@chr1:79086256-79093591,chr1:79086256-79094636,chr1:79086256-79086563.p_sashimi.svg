@@ -2961,23 +2961,23 @@ z
 " id="C0_0_eff5523b42"/>
     </defs>
     <g clip-path="url(#p0156b8e333)">
-     <use style="fill:#cc0011;" x="0" xlink:href="#C0_0_eff5523b42" y="180.0"/>
+     <use style="fill:#ff8000;" x="0" xlink:href="#C0_0_eff5523b42" y="180.0"/>
     </g>
    </g>
    <g id="patch_3">
     <path clip-path="url(#p0156b8e333)" d="
 M78.5143 29.512
-C78.5143 23.6296 83.3688 30.6797 83.3688 36.5621" style="fill:none;stroke:#cc0011;stroke-width:1.04139268516;"/>
+C78.5143 23.6296 83.3688 30.6797 83.3688 36.5621" style="fill:none;stroke:#ff8000;stroke-width:1.04139268516;"/>
    </g>
    <g id="patch_4">
     <path clip-path="url(#p0156b8e333)" d="
 M78.5143 36.8235
-C78.5143 42.7059 208.952 42.7059 208.952 36.8235" style="fill:none;stroke:#cc0011;stroke-width:2.35024801833;"/>
+C78.5143 42.7059 208.952 42.7059 208.952 36.8235" style="fill:none;stroke:#ff8000;stroke-width:2.35024801833;"/>
    </g>
    <g id="patch_5">
     <path clip-path="url(#p0156b8e333)" d="
 M78.5143 29.512
-C78.5143 23.6296 248.345 21.0937 248.345 26.976" style="fill:none;stroke:#cc0011;stroke-width:2.77815125038;"/>
+C78.5143 23.6296 248.345 21.0937 248.345 26.976" style="fill:none;stroke:#ff8000;stroke-width:2.77815125038;"/>
    </g>
    <g id="matplotlib.axis_1"/>
    <g id="matplotlib.axis_2">
@@ -3440,7 +3440,7 @@ Q29.4375 6.6875 42.8281 6.6875
 Q48.0469 6.6875 52.1406 7.59375
 Q56.25 8.5 59.5156 10.4062" id="BitstreamVeraSans-Roman-47"/>
     </defs>
-    <g style="fill:#cc0011;" transform="translate(250.730625 24.9735110294)scale(0.06 -0.06)">
+    <g style="fill:#ff8000;" transform="translate(250.730625 24.9735110294)scale(0.06 -0.06)">
      <use xlink:href="#BitstreamVeraSans-Roman-47"/>
      <use x="77.490234375" xlink:href="#BitstreamVeraSans-Roman-47"/>
     </g>
@@ -6389,23 +6389,23 @@ z
 " id="C1_0_eecbbe0291"/>
     </defs>
     <g clip-path="url(#p9d2ba78e45)">
-     <use style="fill:#ff8800;" x="0" xlink:href="#C1_0_eecbbe0291" y="180.0"/>
+     <use style="fill:#00c866;" x="0" xlink:href="#C1_0_eecbbe0291" y="180.0"/>
     </g>
    </g>
    <g id="patch_14">
     <path clip-path="url(#p9d2ba78e45)" d="
 M78.5143 61.9303
-C78.5143 56.0479 83.3688 60.2135 83.3688 66.0959" style="fill:none;stroke:#ff8800;stroke-width:0.778151250384;"/>
+C78.5143 56.0479 83.3688 60.2135 83.3688 66.0959" style="fill:none;stroke:#00c866;stroke-width:0.778151250384;"/>
    </g>
    <g id="patch_15">
     <path clip-path="url(#p9d2ba78e45)" d="
 M78.5143 66.1569
-C78.5143 72.0392 208.952 72.0392 208.952 66.1569" style="fill:none;stroke:#ff8800;stroke-width:2.44870631991;"/>
+C78.5143 72.0392 208.952 72.0392 208.952 66.1569" style="fill:none;stroke:#00c866;stroke-width:2.44870631991;"/>
    </g>
    <g id="patch_16">
     <path clip-path="url(#p9d2ba78e45)" d="
 M78.5143 61.9303
-C78.5143 56.0479 248.345 53.4684 248.345 59.3508" style="fill:none;stroke:#ff8800;stroke-width:2.28555730901;"/>
+C78.5143 56.0479 248.345 53.4684 248.345 59.3508" style="fill:none;stroke:#00c866;stroke-width:2.28555730901;"/>
    </g>
    <g id="matplotlib.axis_3"/>
    <g id="matplotlib.axis_4">
@@ -6553,7 +6553,7 @@ L0.78125 0
 z
 " id="BitstreamVeraSans-Roman-41"/>
     </defs>
-    <g style="fill:#ff8800;" transform="translate(250.8328125 54.3068443627)scale(0.06 -0.06)">
+    <g style="fill:#00c866;" transform="translate(250.8328125 54.3068443627)scale(0.06 -0.06)">
      <use xlink:href="#BitstreamVeraSans-Roman-47"/>
      <use x="77.490234375" xlink:href="#BitstreamVeraSans-Roman-41"/>
     </g>
@@ -9502,23 +9502,23 @@ z
 " id="C2_0_ff3c1123b1"/>
     </defs>
     <g clip-path="url(#pcc3b0c9770)">
-     <use style="fill:#ffcc33;" x="0" xlink:href="#C2_0_ff3c1123b1" y="180.0"/>
+     <use style="fill:#3399ff;" x="0" xlink:href="#C2_0_ff3c1123b1" y="180.0"/>
     </g>
    </g>
    <g id="patch_25">
     <path clip-path="url(#pcc3b0c9770)" d="
 M78.5143 94.061
-C78.5143 88.1786 83.3688 89.5904 83.3688 95.4728" style="fill:none;stroke:#ffcc33;stroke-width:0.602059991328;"/>
+C78.5143 88.1786 83.3688 89.5904 83.3688 95.4728" style="fill:none;stroke:#3399ff;stroke-width:0.602059991328;"/>
    </g>
    <g id="patch_26">
     <path clip-path="url(#pcc3b0c9770)" d="
 M78.5143 95.4902
-C78.5143 101.373 208.952 101.373 208.952 95.4902" style="fill:none;stroke:#ffcc33;stroke-width:2.17609125906;"/>
+C78.5143 101.373 208.952 101.373 208.952 95.4902" style="fill:none;stroke:#3399ff;stroke-width:2.17609125906;"/>
    </g>
    <g id="patch_27">
     <path clip-path="url(#pcc3b0c9770)" d="
 M78.5143 94.061
-C78.5143 88.1786 248.345 88.2135 248.345 94.0959" style="fill:none;stroke:#ffcc33;stroke-width:1.04139268516;"/>
+C78.5143 88.1786 248.345 88.2135 248.345 94.0959" style="fill:none;stroke:#3399ff;stroke-width:1.04139268516;"/>
    </g>
    <g id="matplotlib.axis_5">
     <g id="xtick_1">
@@ -10103,7 +10103,7 @@ z
    </g>
    <g id="text_26">
     <!-- AA -->
-    <g style="fill:#ffcc33;" transform="translate(250.9228125 83.7254901961)scale(0.06 -0.06)">
+    <g style="fill:#3399ff;" transform="translate(250.9228125 83.7254901961)scale(0.06 -0.06)">
      <use xlink:href="#BitstreamVeraSans-Roman-41"/>
      <use x="71.158203125" xlink:href="#BitstreamVeraSans-Roman-41"/>
     </g>

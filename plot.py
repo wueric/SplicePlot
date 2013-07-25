@@ -39,7 +39,8 @@ if __name__ == '__main__':
             print 'Drawing hive plot...'
             draw_hive_plot(file_name='{0}/plots/{1}_hive.svg'.format(os.path.dirname(os.path.abspath(__file__)),plot_name_stem),
                     data=data_frame,
-                    hive_plot_settings=hive_plot_settings)
+                    hive_plot_settings=hive_plot_settings,
+                    genotype_ordering=ordered_genotypes_list)
 
         if struct_plot_settings['draw_struct_plot']:
             print 'Drawing structure plot...'

@@ -27,7 +27,8 @@ class Axis():
 
 def draw_hive_plot(file_name,
                 data,
-                hive_plot_settings):
+                hive_plot_settings,
+                genotype_ordering):
 
     """ Writes a .svg file containing the plot using the settings passed in as parameters
 
@@ -112,7 +113,7 @@ def draw_hive_plot(file_name,
             all_axes[i] = Axis.auto_boundary_axis(axis_start_radius,axis_end_radius,axis_angles[i],axis_minima[i],axis_maxima[i],axis_step)
 
     # assign colors to genotypes
-    unique_genotypes = list(set(data.iloc[:,0]))
+    unique_genotypes = genotype_ordering
     color_assignment = {}
     for i in range(0,len(unique_genotypes)):
         color_assignment[unique_genotypes[i]] = bezier_colors[i]
