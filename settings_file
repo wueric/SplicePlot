@@ -165,7 +165,7 @@ draw_sashimi_plot = True
 width = 4
 
 # height of the sashimi plot, in inches
-height = 2
+height = 2.5
 
 # title. None means no title, '' means use default title, 'asdf' means title is 'asdf', etc
 plot_title = None

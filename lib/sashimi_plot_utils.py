@@ -283,7 +283,7 @@ def plot_density(settings,event,read_depths_dict,mRNA_object,ordered_genotypes_l
                 y_horz_alignment = 'left'
                 curr_ax.set_ylabel('Depth',
                                        fontsize=font_size,
-                                       va="bottom",
+                                       va="center",
                                        ha=y_horz_alignment,labelpad=10)
 
         else:
@@ -406,7 +406,7 @@ def cubic_bezier(pts, t):
     return p0 * (1 - t)**3 + 3 * t * p1 * (1 - t) ** 2 + \
         3 * t**2 * (1 - t) * p2 + t**3 * p3
 
-def draw_sashimi_plot(output_file_path,settings,var_pos,average_depths_dict,mRNAs_object,ordered_genotypes_list,plot_title=None):
+def draw_sashimi_plot(output_file_path,settings,var_pos,average_depths_dict,mRNAs_object,ordered_genotypes_list):
 
     '''
         draw_sashimi_plot draws the complete sashimi plot
@@ -431,5 +431,5 @@ def draw_sashimi_plot(output_file_path,settings,var_pos,average_depths_dict,mRNA
     '''
 
     plt.figure(figsize=[settings['width'],settings['height']])
-    plot_density(settings,var_pos,average_depths_dict,mRNAs_object,ordered_genotypes_list,plot_title)
+    plot_density(settings,var_pos,average_depths_dict,mRNAs_object,ordered_genotypes_list)
     plt.savefig(output_file_path)
