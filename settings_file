@@ -12,10 +12,10 @@ dimension = 8
 tick_marks = True
 
 # font size of the tick labels in inches. Set to 0 if you do not want tick labels
-tick_label_font_size = 0.1
+tick_label_font_size = 0.175
 
 # distance of the tick labels from the axis in inches
-tick_label_distance = 0.15
+tick_label_distance = 0.175
 
 # height of each tick in inches
 tick_height = 0.08
@@ -29,17 +29,17 @@ axis_start_radius = 0.3
 
 
 # end radius of axis in inches. Measured from the center of the plot
-axis_end_radius = 3
+axis_end_radius = 2.75
 
 # string containing hexadecimal value for the axis color
 axis_colors = '#000000'
 
 
 # list containing the radii for each of the axis labels in inches, measured from center of the plot
-axis_label_radius = [3.5,3.5,3.5]
+axis_label_radius = [3.25,3.25,3.25]
 
 # determines the font size of the axis labels, in inches
-axis_label_size = 0.15
+axis_label_size = 0.2
 
 # determines the thickness of the axes, in inches
 axis_thickness = 0.05
@@ -59,20 +59,20 @@ custom_scale = [[0,1],[0,1],[0,1]]
 bezier_colors = ['#FF8000','#00C866','#3399FF']
 
 # determines the thickness of the beziers, in inches
-bezier_thickness = 0.005
+bezier_thickness = 0.015
 
 # key settings
 # boolean determining whether a key should be drawn
 include_key = True
 
 # determines the font size of the key title, in inches
-key_title_size = .20
+key_title_size = .25
 
 # 2-element list containing the cartesian coordinates of the key, in inches. (0,0) is the center of the plot
 key_position = [1,2]
 
 # determines the font size of the text in the key, in inches
-key_font_size = .15
+key_font_size = .2
 
 # hexadecimal string determining the color of the font in the plot key
 key_text_color = '#000000'
@@ -85,24 +85,24 @@ key_text_color = '#000000'
 draw_struct_plot = True
 
 # dimensions in inches
-plot_width=10
-plot_height=4
+plot_width=9
+plot_height=3
 
 # amount of white space to leave on the left side, in inches
-left_margin=1
+left_margin=0.5
 
 # amount of white space to leave on the right side of the plot in inches.
 # Note that the key, if drawn, will be in this white space
-right_margin=3
+right_margin=3.25
 
 # amount of white space to leave on the top, in inches
-top_margin=0.5
+top_margin=0.2
 
 # amount of white space to leave on the bottom, in inches
 bottom_margin=1
 
 # colors for each junction. Must have as many colors as there are junctions in the data
-colors=["#CC0011","#FF8800","#FFCC33"] 
+colors=["#CC0011","#FF8800","#FFCC33"]
 
 # color for the axis
 axis_color='#000000'
@@ -129,13 +129,13 @@ horiz_axis_title_spacing=0.50
 use_vertical_ticks=True
 
 # spacing between tick marks on the vertical axis. must be between 0 and 1
-vertical_tick_spacing=0.2
+vertical_tick_spacing=0.25
 
 # font size for vertical axis labels, in inches. Set to 0 if you do not want labels
-vert_label_size=0.15
+vert_label_size=0.20
 
 # distance that vertical axis labels are drawn away from the vertical axis in inches
-vert_label_spacing=0.20
+vert_label_spacing=0.25
 
 
 # settings for structure plot key
@@ -145,13 +145,13 @@ include_key = True
 key_title_size = 0
 
 # 2-element list containing the cartesian coordinates of the key in inches. (0,0) is the bottom left corner of the plot
-key_position = [7.50,2.75]
+key_position = [6,2.25]
 
 # list containing the labels for each color in the key. Set to None if you want to use the default labels
 key_labels = None
 
 # determines the font size of the text in the key, in inches
-key_font_size = 0.15
+key_font_size = 0.2
 
 # hexadecimal string for the color of the font in the plot key
 key_text_color = '#000000'
@@ -162,13 +162,16 @@ key_text_color = '#000000'
 draw_sashimi_plot = True
 
 # width of the sashimi plot, in inches
-width = 7
+width = 4
 
 # height of the sashimi plot, in inches
-height = 5
+height = 2
+
+# title. None means no title, '' means use default title, 'asdf' means title is 'asdf', etc
+plot_title = None
 
 # scaling factor for intronic regions. A larger intron_scale makes the intronic regions smaller
-intron_scale = 1
+intron_scale = 15
 
 # scaling factor for exonic regions. A larger exon_scale makes the exonic regions smaller
 exon_scale = 1
@@ -177,10 +180,13 @@ exon_scale = 1
 colors = ["#CC0011","#FF8800","#FFCC33"]
 
 # maximum value on the y-scale
-ymax = 300
+ymax = 1800
 
 # determines whether the average junction-spanning read counts are shown
 number_junctions=True
+
+# determine the font size of the numbering for the junction-spanning reads
+numbering_font_size = 6
 
 resolution=0.5
 
@@ -193,7 +199,7 @@ reverse_minus = False
 font_size = 6
 
 # number of ticks on the y-axis
-nyticks = 3
+nyticks = 2
 
 # number of ticks on the x-axis
 nxticks = 4

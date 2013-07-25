@@ -113,6 +113,8 @@ def default_sashimi_settings():
     sashimi_settings['nxticks'] = 4
     sashimi_settings['show_ylabel'] = True
     sashimi_settings['show_xlabel'] = True
+    sashimi_settings['plot_title'] = None
+    sashimi_settings['numbering_font_size']=6
 
     return sashimi_settings
 
@@ -317,7 +319,8 @@ def parse_sashimi_settings(config_parser):
                     'ymax',
                     'resolution',
                     'junction_log_base',
-                    'font_size'])
+                    'font_size',
+                    'numbering_font_size'])
 
     INT_PARAMS = set(['nyticks',
                     'nxticks'])
@@ -328,7 +331,7 @@ def parse_sashimi_settings(config_parser):
                     'show_ylabel',
                     'show_xlabel'])
 
-    OTHER_PARAMS = set(['colors'])
+    OTHER_PARAMS = set(['colors','plot_title'])
 
     for option in config_parser.options('sashimi_plot'):
         if option in INT_PARAMS:

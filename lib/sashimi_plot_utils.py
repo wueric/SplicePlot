@@ -26,6 +26,7 @@ def plot_density_single(read_depth_object, sample_label,
                         show_ylabel=True,
                         show_xlabel=True,
                         font_size=6,
+                        numbering_font_size=6,
                         junction_log_base=10,
                         plot_title=None,
                         plot_label=None):
@@ -113,7 +114,7 @@ def plot_density_single(read_depth_object, sample_label,
 
         if number_junctions:
             text(midpt[0], midpt[1], '{0}'.format(round(jxns[jxn],2)),
-                 fontsize=6, ha='center', va='center', backgroundcolor='w')
+                 fontsize=numbering_font_size, ha='center', va='center', backgroundcolor='w')
 
         a = Path(pts, [Path.MOVETO, Path.CURVE4, Path.CURVE4, Path.CURVE4])
         p = PathPatch(a, ec=color, lw=log(jxns[jxn] + 1) /\
@@ -147,7 +148,7 @@ def plot_density_single(read_depth_object, sample_label,
 
 
 # Plot density for a series of bam files.
-def plot_density(settings,event,read_depths_dict,mRNA_object,ordered_genotypes_list,plot_title=None):
+def plot_density(settings,event,read_depths_dict,mRNA_object,ordered_genotypes_list):
 
     intron_scale = settings["intron_scale"]
     exon_scale = settings["exon_scale"]
@@ -162,8 +163,8 @@ def plot_density(settings,event,read_depths_dict,mRNA_object,ordered_genotypes_l
     nxticks = settings["nxticks"]
     show_ylabel = settings["show_ylabel"]
     show_xlabel = settings["show_xlabel"]
-    if plot_title is None:
-        plot_title = event
+    plot_title = settings["plot_title"]
+    numbering_font_size = settings["numbering_font_size"]
 
     # Always show y-axis for read densities for now
     showYaxis = True
@@ -184,11 +185,12 @@ def plot_density(settings,event,read_depths_dict,mRNA_object,ordered_genotypes_l
 
     nfiles = len(read_depths_dict.keys())
 
-    if plot_title is not None:
+    if plot_title is not None and plot_title != '':
         # Use custom title if given
         suptitle(plot_title, fontsize=10)
-    else:
+    elif plot_title == '':
         suptitle(event, fontsize=10)
+        
     plotted_axes = []
 
     labels_list = []
@@ -230,6 +232,7 @@ def plot_density(settings,event,read_depths_dict,mRNA_object,ordered_genotypes_l
                         show_ylabel=show_ylabel,
                         show_xlabel=show_xlabel,
                         font_size=font_size,
+                        numbering_font_size=numbering_font_size,
                         junction_log_base=junction_log_base)
 
         plotted_axes.append(plotted_ax)
