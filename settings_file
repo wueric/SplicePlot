@@ -85,7 +85,7 @@ key_text_color = '#000000'
 draw_struct_plot = True
 
 # dimensions in inches
-plot_width=9
+plot_width=9.2
 plot_height=3
 
 # amount of white space to leave on the left side, in inches
@@ -93,7 +93,7 @@ left_margin=0.5
 
 # amount of white space to leave on the right side of the plot in inches.
 # Note that the key, if drawn, will be in this white space
-right_margin=3.25
+right_margin=3.45
 
 # amount of white space to leave on the top, in inches
 top_margin=0.2

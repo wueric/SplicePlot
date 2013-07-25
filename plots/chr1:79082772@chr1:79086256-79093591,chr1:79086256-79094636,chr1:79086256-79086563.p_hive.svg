@@ -167,11 +167,11 @@
 <line x1="2.38156986041" y1="-1.375" x2="2.42156986041" y2="-1.375" style="stroke: rgb(0, 0, 0); stroke-width: 0.015" transform="rotate(240,2.38156986041,-1.375)"/> 
 <text x="2.46906986041" y="1.22344555434" style="fill:rgb(0, 0, 0)" font-size="0.175" font-family="sans-serif" transform="scale(1,-1) rotate(-330,2.46906986041,1.22344555434)" text-anchor="middle">1.0</text>
 <text y="-3.25" style="fill:rgb(0, 0, 0)" font-size="0.2" font-family="sans-serif" transform="scale(1,-1)" text-anchor="middle"><tspan x="1.99005104861e-16">chr1</tspan><tspan x="1.99005104861e-16" dy="0.2">79086256-79093591</tspan></text><text y="1.625" style="fill:rgb(0, 0, 0)" font-size="0.2" font-family="sans-serif" transform="scale(1,-1)" text-anchor="middle"><tspan x="-2.8145825623">chr1</tspan><tspan x="-2.8145825623" dy="0.2">79086256-79094636</tspan></text><text y="1.625" style="fill:rgb(0, 0, 0)" font-size="0.2" font-family="sans-serif" transform="scale(1,-1)" text-anchor="middle"><tspan x="2.8145825623">chr1</tspan><tspan x="2.8145825623" dy="0.2">79086256-79086563</tspan></text><text x="1" y="-2" style="fill:rgb(0, 0, 0)" font-size="0.25" font-family="sans-serif" transform="scale(1,-1) rotate(0,1,-2)" text-anchor="left">chr1:79082772</text>
-<rect x="1" y="1.65" width="0.2" height="0.2" style="fill:rgb(255, 128, 0); stroke-width:0; stroke:rgb(255, 128, 0)"/>
+<rect x="1" y="1.65" width="0.2" height="0.2" style="fill:rgb(255, 128, 0); stroke-width:0.01; stroke:rgb(255, 128, 0)"/>
 <text x="1.4" y="-1.65" style="fill:rgb(0, 0, 0)" font-size="0.2" font-family="sans-serif" transform="scale(1,-1) rotate(0,1.4,-1.65)" text-anchor="left">GG</text>
-<rect x="1" y="1.25" width="0.2" height="0.2" style="fill:rgb(0, 200, 102); stroke-width:0; stroke:rgb(0, 200, 102)"/>
+<rect x="1" y="1.25" width="0.2" height="0.2" style="fill:rgb(0, 200, 102); stroke-width:0.01; stroke:rgb(0, 200, 102)"/>
 <text x="1.4" y="-1.25" style="fill:rgb(0, 0, 0)" font-size="0.2" font-family="sans-serif" transform="scale(1,-1) rotate(0,1.4,-1.25)" text-anchor="left">AA</text>
-<rect x="1" y="0.85" width="0.2" height="0.2" style="fill:rgb(51, 153, 255); stroke-width:0; stroke:rgb(51, 153, 255)"/>
+<rect x="1" y="0.85" width="0.2" height="0.2" style="fill:rgb(51, 153, 255); stroke-width:0.01; stroke:rgb(51, 153, 255)"/>
 <text x="1.4" y="-0.85" style="fill:rgb(0, 0, 0)" font-size="0.2" font-family="sans-serif" transform="scale(1,-1) rotate(0,1.4,-0.85)" text-anchor="left">GA</text>
 </g>
 </svg>
