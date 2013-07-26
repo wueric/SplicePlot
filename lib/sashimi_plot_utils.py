@@ -432,4 +432,4 @@ def draw_sashimi_plot(output_file_path,settings,var_pos,average_depths_dict,mRNA
 
     plt.figure(figsize=[settings['width'],settings['height']])
     plot_density(settings,var_pos,average_depths_dict,mRNAs_object,ordered_genotypes_list)
-    plt.savefig(output_file_path)
+    plt.savefig(output_file_path,transparent=True)
