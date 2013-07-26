@@ -16,7 +16,7 @@ L288 180
 L288 0
 L0 0
 z
-" style="fill:#ffffff;"/>
+" style="fill:none;opacity:0.0;"/>
   </g>
   <g id="axes_1">
    <g id="patch_2">
@@ -26,7 +26,7 @@ L259.2 44.6667
 L259.2 18
 L36 18
 z
-" style="fill:#ffffff;"/>
+" style="fill:none;opacity:0.0;"/>
    </g>
    <g id="PolyCollection_1">
     <defs>
@@ -3454,7 +3454,7 @@ L259.2 74
 L259.2 47.3333
 L36 47.3333
 z
-" style="fill:#ffffff;"/>
+" style="fill:none;opacity:0.0;"/>
    </g>
    <g id="PolyCollection_2">
     <defs>
@@ -6567,7 +6567,7 @@ L259.2 103.333
 L259.2 76.6667
 L36 76.6667
 z
-" style="fill:#ffffff;"/>
+" style="fill:none;opacity:0.0;"/>
    </g>
    <g id="PolyCollection_3">
     <defs>
