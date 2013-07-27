@@ -27,7 +27,7 @@ if __name__ == '__main__':
         if args.output is not None:
             try:
                 os.makedirs(args.output)
-            except:
+            except OSError:
                 if os.path.isdir(args.output):
                     pass
                 else:
