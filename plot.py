@@ -79,7 +79,12 @@ if __name__ == '__main__':
         
 
         print 'Done!'
+    except IOError:
+        print 'There is no pickle file at {0}'.format(args.pickle)
+        print 'Failed'
     except EOFError:
         print 'Pickle file is invalid'
+        print 'Failed'
     except Exception:
         print 'Failed'
+
