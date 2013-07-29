@@ -450,10 +450,19 @@ if __name__ == '__main__':
 
         output_file_path = args.output
         if args.output == None:
-            output_file_path = '{0}/pickle_files/{1}@{2}.p'.format(os.path.dirname(os.path.abspath(__file__)),args.varpos,args.junc)
+            output_file_path = '{0}/pickle_files'.format(os.path.dirname(os.path.abspath(__file__)))
+
+        try:
+            os.makedirs(output_file_path)
+        except OSError:
+            if os.path.isdir(output_file_path):
+                pass
+            else:
+                print 'Could not create directory {0}'.format(output_file_path)
+                raise Exception
 
         # pickle the data
-        pickle_file = open(output_file_path,'wb')
+        pickle_file = open('{0}/{1}@{2}.p'.format(output_file_path,args.varpos,args.junc),'wb')
         pickle.dump(args.varpos,pickle_file)
         pickle.dump(args.junc,pickle_file)
         pickle.dump(genotype_averages_dict,pickle_file)
