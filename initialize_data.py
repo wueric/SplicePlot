@@ -234,6 +234,19 @@ class EvaluatedExon:
         return '{0},{1}'.format(self.exon.__str__(), self.value)
 
 def get_splice_junc_coordinates(junction_name):
+
+    '''
+        get_splice_junc_coordinates takes in a junction name and returns the chromosome name,
+            the shared splicing site, and the other splicing sites
+
+        junction_name is a string containing the junction name, in the format "chr1:100-200,chr1:100-300"
+
+        return values:
+            chrom: a string containing the chromosome name
+            shared_site: an int containing the base number of the shared splice site
+            upper_ss: a list of ints containing the base numbers of the other splice sites
+    '''
+
     junctions_list = junction_name.split(',')
     
     chromosome_name_list = map(lambda x: x.split(':')[0], junctions_list)
@@ -269,6 +282,25 @@ def get_splice_junc_coordinates(junction_name):
 
 def determine_exons_and_coordinates(gtf_file_name,chrom_name,shared_site,other_sites):
 
+    '''
+        determine_exons_and_coordinates creates a list of possible exons that could have been involved
+            the creating the junction, and gives the lower and upper coordinates of the region to search
+            for in the bam file
+
+        gtf_file_name is the file path for the gtf file
+        chrom_name is a string containing the chromosome name
+        shared_site is an integer representing the base number of the shared splice site
+        other_sites is a list of integers containing the base numbers of the other splice sites
+
+
+        return values:
+            min_coordinate is an int representing the lower border of the region to search in the bam files
+            max_coordinate is an int representing the upper border of the region to search in the bam files
+            filtered_exons_list is a list of Exon objects containing exons which could have been involved in
+                the splice junction
+
+    '''
+
     exons_found_buckets = {shared_site:False}
     for coordinate in other_sites:
         exons_found_buckets[coordinate] = False
@@ -276,48 +308,52 @@ def determine_exons_and_coordinates(gtf_file_name,chrom_name,shared_site,other_s
     splice_junc_coordinate_list = [shared_site]
     splice_junc_coordinate_list.extend(other_sites)
 
-    gtf_tabix = pysam.Tabixfile(gtf_file_name,'r')
-    relevant_exons_iterator = gtf_tabix.fetch(chrom_name,min(splice_junc_coordinate_list)-1,max(splice_junc_coordinate_list)+1)
+    try:
+        gtf_tabix = pysam.Tabixfile(gtf_file_name,'r')
+        relevant_exons_iterator = gtf_tabix.fetch(chrom_name,min(splice_junc_coordinate_list)-1,max(splice_junc_coordinate_list)+1)
 
-    filtered_exons_list = []
-    min_coordinate = float('inf')
-    max_coordinate = float('-inf')
-    for exon_line in relevant_exons_iterator:
-        # shared_site coordinate < other_sites coordinates case
-        exon = Exon.create_from_gtf(exon_line)
-        if shared_site > other_sites[0]:
-            if exon.low == shared_site:
-                filtered_exons_list.append(exon)
-                exons_found_buckets[shared_site] = True
+        filtered_exons_list = []
+        min_coordinate = float('inf')
+        max_coordinate = float('-inf')
+        for exon_line in relevant_exons_iterator:
+            # shared_site coordinate < other_sites coordinates case
+            exon = Exon.create_from_gtf(exon_line)
+            if shared_site > other_sites[0]:
+                if exon.low == shared_site:
+                    filtered_exons_list.append(exon)
+                    exons_found_buckets[shared_site] = True
 
-                if exon.high > max_coordinate:
-                    max_coordinate = exon.high
+                    if exon.high > max_coordinate:
+                        max_coordinate = exon.high
 
-            elif exon.high in other_sites:
-                filtered_exons_list.append(exon)
-                exons_found_buckets[exon.high] = True
-            
-                if exon.low < min_coordinate:
-                    min_coordinate = exon.low
-        else:
-            if exon.high == shared_site:
-                filtered_exons_list.append(exon)
-                exons_found_buckets[shared_site] = True
-
-                if exon.low < min_coordinate:
-                    min_coordinate = exon.low
-            elif exon.low in other_sites:
-                filtered_exons_list.append(exon)
-                exons_found_buckets[exon.low] = True
+                elif exon.high in other_sites:
+                    filtered_exons_list.append(exon)
+                    exons_found_buckets[exon.high] = True
                 
-                if exon.high > max_coordinate:
-                    max_coordinate = exon.high
+                    if exon.low < min_coordinate:
+                        min_coordinate = exon.low
+            else:
+                if exon.high == shared_site:
+                    filtered_exons_list.append(exon)
+                    exons_found_buckets[shared_site] = True
 
-    if min_coordinate == float('inf') or max_coordinate == float('-inf') or not all(exons_found_buckets[x] for x in exons_found_buckets):
-        print 'The given junction coordinates do not correspond to exons in the annotation'
+                    if exon.low < min_coordinate:
+                        min_coordinate = exon.low
+                elif exon.low in other_sites:
+                    filtered_exons_list.append(exon)
+                    exons_found_buckets[exon.low] = True
+                    
+                    if exon.high > max_coordinate:
+                        max_coordinate = exon.high
+
+        if min_coordinate == float('inf') or max_coordinate == float('-inf') or not all(exons_found_buckets[x] for x in exons_found_buckets):
+            print 'The given junction coordinates do not correspond to exons in the annotation'
+            raise Exception
+
+        return min_coordinate, max_coordinate, filtered_exons_list
+    except IOError:
+        print 'There is no gtf file at {0}'.format(gtf_file_name)
         raise Exception
-
-    return min_coordinate, max_coordinate, filtered_exons_list
                 
 
 
