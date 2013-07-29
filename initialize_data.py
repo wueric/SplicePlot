@@ -159,15 +159,19 @@ def map_indiv_id_to_bam_name(id_map_file):
     '''
 
     bam_to_id = {}
-    id_to_bam = {}
     bam_list = []
 
     try:
         lines = open(id_map_file,'r').readlines()
         for line in lines:
             line = line.strip('\n').split()
-            bam_to_id[line[1]] = line[0]
-            bam_list.append(line[1])
+
+            file_path = line[1]
+            if os.path.exists(file_path):
+                bam_to_id[line[1]] = line[0]
+                bam_list.append(line[1])
+            else:
+                print 'Skipping {0}. Invalid file path'.format(file_path)
 
         return bam_to_id, bam_list
 
@@ -229,6 +233,94 @@ class EvaluatedExon:
     def __str__(self):
         return '{0},{1}'.format(self.exon.__str__(), self.value)
 
+def get_splice_junc_coordinates(junction_name):
+    junctions_list = junction_name.split(',')
+    
+    chromosome_name_list = map(lambda x: x.split(':')[0], junctions_list)
+    if not all(x==chromosome_name_list[0] for x in chromosome_name_list):
+        print '{0} is not a valid junction_name'.format(junction_name)
+        raise Exception
+
+    chrom = chromosome_name_list[0]
+
+    # figure out the shared splice site
+    splice_junc_coordinate_list = []
+    shared_site = None
+
+    lower_ss, upper_ss = [], []
+    for intronic_region in junctions_list:
+        low, high = map(int, intronic_region.split(':')[1].split('-'))
+        if low not in lower_ss:
+            lower_ss.append(low)
+        if high not in upper_ss:
+            upper_ss.append(high)
+
+    if len(upper_ss) == 1:
+        shared_site = upper_ss[0]
+        return chrom, shared_site, lower_ss
+
+    elif len(lower_ss) == 1:
+        shared_site = lower_ss[0]
+        return chrom, shared_site, upper_ss
+    else:
+        print '{0} is not a valid junction name'.format(junction_name)
+        raise Exception
+
+
+def determine_exons_and_coordinates(gtf_file_name,chrom_name,shared_site,other_sites):
+
+    exons_found_buckets = {shared_site:False}
+    for coordinate in other_sites:
+        exons_found_buckets[coordinate] = False
+
+    splice_junc_coordinate_list = [shared_site]
+    splice_junc_coordinate_list.extend(other_sites)
+
+    gtf_tabix = pysam.Tabixfile(gtf_file_name,'r')
+    relevant_exons_iterator = gtf_tabix.fetch(chrom_name,min(splice_junc_coordinate_list)-1,max(splice_junc_coordinate_list)+1)
+
+    filtered_exons_list = []
+    min_coordinate = float('inf')
+    max_coordinate = float('-inf')
+    for exon_line in relevant_exons_iterator:
+        # shared_site coordinate < other_sites coordinates case
+        exon = Exon.create_from_gtf(exon_line)
+        if shared_site > other_sites[0]:
+            if exon.low == shared_site:
+                filtered_exons_list.append(exon)
+                exons_found_buckets[shared_site] = True
+
+                if exon.high > max_coordinate:
+                    max_coordinate = exon.high
+
+            elif exon.high in other_sites:
+                filtered_exons_list.append(exon)
+                exons_found_buckets[exon.high] = True
+            
+                if exon.low < min_coordinate:
+                    min_coordinate = exon.low
+        else:
+            if exon.high == shared_site:
+                filtered_exons_list.append(exon)
+                exons_found_buckets[shared_site] = True
+
+                if exon.low < min_coordinate:
+                    min_coordinate = exon.low
+            elif exon.low in other_sites:
+                filtered_exons_list.append(exon)
+                exons_found_buckets[exon.low] = True
+                
+                if exon.high > max_coordinate:
+                    max_coordinate = exon.high
+
+    if min_coordinate == float('inf') or max_coordinate == float('-inf') or not all(exons_found_buckets[x] for x in exons_found_buckets):
+        print 'The given junction coordinates do not correspond to exons in the annotation'
+        raise Exception
+
+    return min_coordinate, max_coordinate, filtered_exons_list
+                
+
+
 def initialize_read_depths_and_determine_exons(junction_name,gtf_file_name,bam_list,bam_to_id_dict):
 
     '''
@@ -249,56 +341,11 @@ def initialize_read_depths_and_determine_exons(junction_name,gtf_file_name,bam_l
             A mRNAsObject, which represents the set of possible mRNA segments determined from the junctions
     '''
 
-    junctions_list = junction_name.split(',')
-    
-    chrom = junctions_list[0].split(':')[0]
+    chrom, shared_site, other_sites = get_splice_junc_coordinates(junction_name)
+    minimum_coordinate, maximum_coordinate, filtered_exons_list = determine_exons_and_coordinates(gtf_file_name,chrom,shared_site,other_sites)
 
-    # figure out the shared splice site
-    splice_junc_coordinate_list = []
-    shared_site = None
-
-    lower_ss, upper_ss = [], []
-    for intronic_region in junctions_list:
-        low, high = map(int, intronic_region.split(':')[1].split('-'))
-        if low not in lower_ss:
-            lower_ss.append(low)
-        if high not in upper_ss:
-            upper_ss.append(high)
-
-    if len(upper_ss) == 1:
-        splice_junc_coordinate_list.extend(lower_ss)
-        splice_junc_coordinate_list.extend(upper_ss)
-        shared_site = upper_ss[0]
-    elif len(lower_ss) == 1:
-        splice_junc_coordinate_list.extend(upper_ss)
-        splice_junc_coordinate_list.extend(lower_ss)
-        shared_site = lower_ss[0]
-
-    else:
-        print '{0} is not a valid junction name'.format(junction_name)
-        raise Exception
-            
-    splice_junc_coordinate_list = set(splice_junc_coordinate_list)
-
-    gtf_tabix = pysam.Tabixfile(gtf_file_name,'r')
-    relevant_exons_iterator = gtf_tabix.fetch(chrom,min(splice_junc_coordinate_list)-1,max(splice_junc_coordinate_list)+1)
-
-    filtered_exons_list = []
-    minimum_coordinate = float('inf')
-    maximum_coordinate = float('-inf')
-    for exon_line in relevant_exons_iterator:
-        exon = Exon.create_from_gtf(exon_line)
-        if exon.low in splice_junc_coordinate_list or exon.high in splice_junc_coordinate_list:
-            filtered_exons_list.append(exon)
-            
-            if exon.low < minimum_coordinate:
-                minimum_coordinate = exon.low
-            if exon.high > maximum_coordinate:
-                maximum_coordinate = exon.high
-
-    if minimum_coordinate == float('inf') or maximum_coordinate == float('-inf'):
-        print 'The coordinates given in {0} do not match known exons in the annotation'.format(junction_name)
-        raise Exception
+    splice_junc_coordinate_list = [shared_site]
+    splice_junc_coordinate_list.extend(other_sites)
 
     read_depth_dict = {}
     total_depth = ReadDepth.create_blank()
@@ -445,31 +492,40 @@ if __name__ == '__main__':
     parser.add_argument('--output',type=str,required=False,default=None,help='location of output pickle file. Optional parameter')
 
     args = parser.parse_args()
-    try:
-        genotype_averages_dict, data_frame, mRNA_info_object, filtered_genotypes_list = calculate_average_expression_and_data_frame(args.varpos,args.junc,args.vcf,args.gtf,args.mf)
+    #try:
+    genotype_averages_dict, data_frame, mRNA_info_object, filtered_genotypes_list = calculate_average_expression_and_data_frame(args.varpos,args.junc,args.vcf,args.gtf,args.mf)
 
+    output_file_path = '{0}/pickle_files/'.format(os.path.dirname(os.path.abspath(__file__)))
+    if args.output is not None:
         output_file_path = args.output
-        if args.output == None:
-            output_file_path = '{0}/pickle_files'.format(os.path.dirname(os.path.abspath(__file__)))
 
-        try:
-            os.makedirs(output_file_path)
-        except OSError:
-            if os.path.isdir(output_file_path):
-                pass
-            else:
-                print 'Could not create directory {0}'.format(output_file_path)
-                raise Exception
+    stem = output_file_path
+    tail = '{0}@{1}.p'.format(args.varpos,args.junc)
+    
+    if output_file_path[len(output_file_path)-2:] == '.p':
+        stem, tail = os.path.split(output_file_path)
 
-        # pickle the data
-        pickle_file = open('{0}/{1}@{2}.p'.format(output_file_path,args.varpos,args.junc),'wb')
-        pickle.dump(args.varpos,pickle_file)
-        pickle.dump(args.junc,pickle_file)
-        pickle.dump(genotype_averages_dict,pickle_file)
-        pickle.dump(mRNA_info_object,pickle_file)
-        pickle.dump(data_frame,pickle_file)
-        pickle.dump(filtered_genotypes_list,pickle_file)
+    try:
+        os.makedirs(stem)
+    except OSError:
+        if os.path.isdir(stem):
+            pass
+        else:
+            print 'Cannot create directory {0}'.format(stem)
+            raise Exception
 
-        pickle_file.close()
-    except:
-        print 'Failed'
+    if stem != '' and stem[len(stem)-1] != '/':
+        stem = stem + '/'
+
+    # pickle the data
+    pickle_file = open('{0}{1}'.format(stem,tail),'wb')
+    pickle.dump(args.varpos,pickle_file)
+    pickle.dump(args.junc,pickle_file)
+    pickle.dump(genotype_averages_dict,pickle_file)
+    pickle.dump(mRNA_info_object,pickle_file)
+    pickle.dump(data_frame,pickle_file)
+    pickle.dump(filtered_genotypes_list,pickle_file)
+
+    pickle_file.close()
+    #except:
+    #    print 'Failed'
