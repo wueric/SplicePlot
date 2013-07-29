@@ -492,40 +492,40 @@ if __name__ == '__main__':
     parser.add_argument('--output',type=str,required=False,default=None,help='location of output pickle file. Optional parameter')
 
     args = parser.parse_args()
-    #try:
-    genotype_averages_dict, data_frame, mRNA_info_object, filtered_genotypes_list = calculate_average_expression_and_data_frame(args.varpos,args.junc,args.vcf,args.gtf,args.mf)
-
-    output_file_path = '{0}/pickle_files/'.format(os.path.dirname(os.path.abspath(__file__)))
-    if args.output is not None:
-        output_file_path = args.output
-
-    stem = output_file_path
-    tail = '{0}@{1}.p'.format(args.varpos,args.junc)
-    
-    if output_file_path[len(output_file_path)-2:] == '.p':
-        stem, tail = os.path.split(output_file_path)
-
     try:
-        os.makedirs(stem)
-    except OSError:
-        if os.path.isdir(stem):
-            pass
-        else:
-            print 'Cannot create directory {0}'.format(stem)
-            raise Exception
+        genotype_averages_dict, data_frame, mRNA_info_object, filtered_genotypes_list = calculate_average_expression_and_data_frame(args.varpos,args.junc,args.vcf,args.gtf,args.mf)
 
-    if stem != '' and stem[len(stem)-1] != '/':
-        stem = stem + '/'
+        output_file_path = '{0}/pickle_files/'.format(os.path.dirname(os.path.abspath(__file__)))
+        if args.output is not None:
+            output_file_path = args.output
 
-    # pickle the data
-    pickle_file = open('{0}{1}'.format(stem,tail),'wb')
-    pickle.dump(args.varpos,pickle_file)
-    pickle.dump(args.junc,pickle_file)
-    pickle.dump(genotype_averages_dict,pickle_file)
-    pickle.dump(mRNA_info_object,pickle_file)
-    pickle.dump(data_frame,pickle_file)
-    pickle.dump(filtered_genotypes_list,pickle_file)
+        stem = output_file_path
+        tail = '{0}@{1}.p'.format(args.varpos,args.junc)
+        
+        if output_file_path[len(output_file_path)-2:] == '.p':
+            stem, tail = os.path.split(output_file_path)
 
-    pickle_file.close()
-    #except:
-    #    print 'Failed'
+        try:
+            os.makedirs(stem)
+        except OSError:
+            if os.path.isdir(stem):
+                pass
+            else:
+                print 'Cannot create directory {0}'.format(stem)
+                raise Exception
+
+        if stem != '' and stem[len(stem)-1] != '/':
+            stem = stem + '/'
+
+        # pickle the data
+        pickle_file = open('{0}{1}'.format(stem,tail),'wb')
+        pickle.dump(args.varpos,pickle_file)
+        pickle.dump(args.junc,pickle_file)
+        pickle.dump(genotype_averages_dict,pickle_file)
+        pickle.dump(mRNA_info_object,pickle_file)
+        pickle.dump(data_frame,pickle_file)
+        pickle.dump(filtered_genotypes_list,pickle_file)
+
+        pickle_file.close()
+    except:
+        print 'Failed'
