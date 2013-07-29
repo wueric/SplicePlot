@@ -28,27 +28,31 @@ class VCFLine:
         self.alt = None
         self.genotype_calls = {}
         
-        
-        feature_iterator = VCF_object.fetch(region)
-        for feature in feature_iterator:
-            vcf_line_array = feature.strip('\n').split()
-            
-            contig_name = vcf_line_array[0]
-            position = int(vcf_line_array[1])
-            if contig_name == self.contig and position == self.position:
-                self.id = vcf_line_array[2]
-                self.ref = vcf_line_array[3]
-                self.alt = filter(lambda x: x != '.', vcf_line_array[4].split(','))
+        try:
+            feature_iterator = VCF_object.fetch(region)
+            for feature in feature_iterator:
+                vcf_line_array = feature.strip('\n').split()
                 
-                genotype_calls_list = vcf_line_array[9:]
+                contig_name = vcf_line_array[0]
+                position = int(vcf_line_array[1])
+                if contig_name == self.contig and position == self.position:
+                    self.id = vcf_line_array[2]
+                    self.ref = vcf_line_array[3]
+                    self.alt = filter(lambda x: x != '.', vcf_line_array[4].split(','))
+                    
+                    genotype_calls_list = vcf_line_array[9:]
 
-                for i, indiv_id in enumerate(self.samples):
-                    if '.' not in genotype_calls_list[i].split(':')[0]:
-                        self.genotype_calls[indiv_id] = genotype_calls_list[i]
-                break
+                    for i, indiv_id in enumerate(self.samples):
+                        if '.' not in genotype_calls_list[i].split(':')[0]:
+                            self.genotype_calls[indiv_id] = genotype_calls_list[i]
+                    break
 
-        if self.id == None:
-            print "There is no variant at {0}".format(region)
+            if self.id == None:
+                print "There is no variant at {0}".format(region)
+                raise Exception
+
+        except ValueError:
+            print "{0} is not a valid SNP position for this VCF file".format(region)
             raise Exception
                 
 
