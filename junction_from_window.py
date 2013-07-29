@@ -66,8 +66,8 @@ def get_alternative_junctions(window,bam_list):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Get potential alternative junctions in a genomic coordinate window')
 
-    parser.add_argument('window',type=str,help='Genomic window')
-    parser.add_argument('--mf',type=str,required=True,help='map file containing locations of .bam files')
+    parser.add_argument('window',type=str,help='Genomic window, in the format chr1:10000-20000')
+    parser.add_argument('mf',type=str,required=True,help='map file containing locations of .bam files')
 
     args = parser.parse_args()
     
