@@ -102,7 +102,7 @@ top_margin=0.2
 bottom_margin=1
 
 # colors for each junction. Must have as many colors as there are junctions in the data
-colors=["#CC2A36","#0000CC","#FFC613"]
+colors=["#FF3100","#FFD200","#5A0DAC"]
 
 # color for the axis
 axis_color='#000000'

@@ -246,36 +246,37 @@ def get_splice_junc_coordinates(junction_name):
             shared_site: an int containing the base number of the shared splice site
             upper_ss: a list of ints containing the base numbers of the other splice sites
     '''
+    try:
+        junctions_list = junction_name.split(',')
+        
+        chromosome_name_list = map(lambda x: x.split(':')[0], junctions_list)
+        if not all(x==chromosome_name_list[0] for x in chromosome_name_list):
+            raise Exception
 
-    junctions_list = junction_name.split(',')
-    
-    chromosome_name_list = map(lambda x: x.split(':')[0], junctions_list)
-    if not all(x==chromosome_name_list[0] for x in chromosome_name_list):
-        print '{0} is not a valid junction_name'.format(junction_name)
-        raise Exception
+        chrom = chromosome_name_list[0]
 
-    chrom = chromosome_name_list[0]
+        # figure out the shared splice site
+        splice_junc_coordinate_list = []
+        shared_site = None
 
-    # figure out the shared splice site
-    splice_junc_coordinate_list = []
-    shared_site = None
+        lower_ss, upper_ss = [], []
+        for intronic_region in junctions_list:
+            low, high = map(int, intronic_region.split(':')[1].split('-'))
+            if low not in lower_ss:
+                lower_ss.append(low)
+            if high not in upper_ss:
+                upper_ss.append(high)
 
-    lower_ss, upper_ss = [], []
-    for intronic_region in junctions_list:
-        low, high = map(int, intronic_region.split(':')[1].split('-'))
-        if low not in lower_ss:
-            lower_ss.append(low)
-        if high not in upper_ss:
-            upper_ss.append(high)
+        if len(upper_ss) == 1:
+            shared_site = upper_ss[0]
+            return chrom, shared_site, lower_ss
 
-    if len(upper_ss) == 1:
-        shared_site = upper_ss[0]
-        return chrom, shared_site, lower_ss
-
-    elif len(lower_ss) == 1:
-        shared_site = lower_ss[0]
-        return chrom, shared_site, upper_ss
-    else:
+        elif len(lower_ss) == 1:
+            shared_site = lower_ss[0]
+            return chrom, shared_site, upper_ss
+        else:
+            raise Exception
+    except:
         print '{0} is not a valid junction name'.format(junction_name)
         raise Exception
 
