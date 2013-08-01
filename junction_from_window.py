@@ -49,7 +49,7 @@ def get_alternative_junctions(window,bam_list):
             for upper_coordinate in upper_coordinates:
                 junction_string += '{0}:{1}-{2},'.format(contig_name,key,upper_coordinate)
 
-            alternative_junctions_list.append(junction_string)
+            alternative_junctions_list.append(junction_string[0:len(junction_string)-1])
 
     for key, value in junctions_by_high_ss.items():
         if len(value) > 1:
