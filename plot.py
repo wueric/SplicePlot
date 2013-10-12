@@ -7,6 +7,39 @@ from lib.hive_struct_utils import draw_hive_plot, draw_population_structure_grap
 from lib.sashimi_plot_utils import draw_sashimi_plot
 import os
 import cPickle as pickle
+import pandas
+
+def create_data_frame_from_file(file_name):
+
+    """ Creates a pandas.DataFrame object containing splicing expression information by reading a text file.
+
+    file_name is the name of the file containing the splicing expression
+    """
+
+    try:
+        f1 = open(file_name,'r').readlines()
+        header = f1[0].strip('\n').split('\t')
+
+        col_names = header[1:]
+
+        construction_data_dict = {}
+        
+        for i in range(1,len(f1)):
+            line = f1[i].strip('\n').split('\t')
+
+            expression_values = map(float,line[2:])
+            line[2:] = expression_values
+
+            indiv_name = line[0]
+            construction_data_dict[indiv_name] = pandas.Series(line[1:],col_names)
+
+        data_frame = pandas.DataFrame(construction_data_dict).T
+        return data_frame
+            
+
+    except IOError:
+        print 'Invalid data file'
+        sys.exit(1)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Draw hive plots, structure plots, and sashimi plots from genomic data')
@@ -87,4 +120,3 @@ if __name__ == '__main__':
         print 'Failed'
     except Exception:
         print 'Failed'
-
