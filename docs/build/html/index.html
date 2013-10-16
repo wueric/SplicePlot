@@ -1,0 +1,540 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>SplicePlot: a tool for visualizing alternative splicing &mdash; splice_plot 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="splice_plot 1.0 documentation" href="#" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li><a href="#">splice_plot 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="toctree-wrapper compound">
+<ul class="simple">
+</ul>
+</div>
+<div class="section" id="spliceplot-a-tool-for-visualizing-alternative-splicing">
+<h1>SplicePlot: a tool for visualizing alternative splicing<a class="headerlink" href="#spliceplot-a-tool-for-visualizing-alternative-splicing" title="Permalink to this headline">¶</a></h1>
+<p>SplicePlot is a tool for visualizing alternative splicing and the effects of
+splicing quantitative trait loci (sQTLs) from RNA-seq data. It provides a simple command line
+interface for drawing sashimi plots, hive plots, and structure plots of
+alternative splicing events from .bam, .gtf, and .vcf files.</p>
+</div>
+<div class="section" id="updates">
+<h1>Updates<a class="headerlink" href="#updates" title="Permalink to this headline">¶</a></h1>
+<p><strong>30 July 2013:</strong> Version 1.0 available here</p>
+<p><strong>14 October 2013:</strong> Version 1.1 is now available. Check the Github page for changes.</p>
+</div>
+<div class="section" id="dependencies">
+<h1>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h1>
+<p><strong>Python requirements:</strong></p>
+<ul class="simple">
+<li><a class="reference external" href="http://www.python.org/download/releases/">Python 2.6 or newer</a> . If running Python 2.6, download and install the <a class="reference external" href="https://pypi.python.org/pypi/argparse">argparse module</a></li>
+<li><a class="reference external" href="http://www.numpy.org/">numpy version 1.7.1 or newer</a></li>
+<li><a class="reference external" href="http://www.scipy.org/">scipy version 0.11.0 or newer</a></li>
+<li><a class="reference external" href="http://matplotlib.org/index.html">matplotlib version 1.2.0 or newer</a></li>
+<li><a class="reference external" href="http://pandas.pydata.org/">pandas version 0.11.0 or newer</a></li>
+<li><a class="reference external" href="http://code.google.com/p/pysam/">pysam version 0.7 or newer</a></li>
+</ul>
+<p><strong>Other requirements:</strong></p>
+<ul class="simple">
+<li><a class="reference external" href="http://samtools.sourceforge.net/">SAMtools</a> must be installed and be in your $PATH</li>
+<li><a class="reference external" href="http://sourceforge.net/projects/samtools/files/tabix/">Tabix</a> must be installed and be in your $PATH</li>
+</ul>
+</div>
+<div class="section" id="source-code">
+<h1>Source Code<a class="headerlink" href="#source-code" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li>Source code is available here: <a class="reference external" href="https://github.com/wueric/SplicePlot">https://github.com/wueric/SplicePlot</a></li>
+</ul>
+</div>
+<div class="section" id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<ol class="arabic simple">
+<li>Install the above dependencies.</li>
+<li>Download the <cite>SplicePlot .zip</cite> and unpack the archive in the desired directory</li>
+<li>Check if all of the necessary Python packages are available by running the command <tt class="docutils literal"><span class="pre">python</span> <span class="pre">check_module_availability.py</span></tt> in the <em>SplicePlot</em> directory.</li>
+</ol>
+</div>
+<div class="section" id="virtualbox-virtual-machine-instructions">
+<h1>VirtualBox Virtual Machine Instructions<a class="headerlink" href="#virtualbox-virtual-machine-instructions" title="Permalink to this headline">¶</a></h1>
+<ol class="arabic">
+<li><p class="first">Download <a class="reference external" href="https://www.virtualbox.org/">VirtualBox</a> and install it.</p>
+</li>
+<li><p class="first">Download the SplicePlot Ubuntu virtual machine from here.</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference external" href="http://py-gi1.stanford.edu/~smontgom/SplicePlotVM.ova">Large VM loaded with the Montgomery et al, Nature, 2010 BAMs (60Gbs!!)</a></li>
+<li><a class="reference external" href="http://py-gi1.stanford.edu/~smontgom/SplicePlotReducedVM.ova">Small VM loaded with the Montgomery et al, Nature, 2010 BAMs for chr20 (2.5Gb)</a></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">Open VirtualBox, and import the virtual machine.</p>
+</li>
+<li><p class="first">Start up the virtual machine. Open a terminal window, and SplicePlot can be run from the command line.</p>
+</li>
+</ol>
+</div>
+<div class="section" id="testing-spliceplot">
+<h1>Testing SplicePlot<a class="headerlink" href="#testing-spliceplot" title="Permalink to this headline">¶</a></h1>
+<p>A sample pickle file containing simulated data has been provided in the directory <em>test_files</em>. To test SplicePlot, run the command <tt class="docutils literal"><span class="pre">python</span> <span class="pre">plot.py</span> <span class="pre">test_files/test.p</span> <span class="pre">pickle</span> <span class="pre">settings_file</span></tt> in the <em>SplicePlot</em> directory. If all goes well, three plots should appear in the <em>plots</em> directory.</p>
+<p>A sample table file containing simulated data is also provided in <em>test_files</em>. Run teh command <tt class="docutils literal"><span class="pre">python</span> <span class="pre">plot.py</span> <span class="pre">test_files/test_table</span> <span class="pre">table</span> <span class="pre">settings_file</span></tt> in the <em>SplicePlot</em> directory. If all goes well, two plots should appear in the <em>plots</em> directory.</p>
+</div>
+<div class="section" id="overview">
+<h1>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="sashimi-plots">
+<h2>Sashimi plots<a class="headerlink" href="#sashimi-plots" title="Permalink to this headline">¶</a></h2>
+<div class="figure align-center">
+<img alt="_images/sashimi_sample.png" src="_images/sashimi_sample.png" />
+</div>
+<p><a class="reference external" href="http://arxiv.org/abs/1306.3466">Sashimi plots</a> first appeared as a part of the <a class="reference external" href="http://genes.mit.edu/burgelab/miso/docs/index.html">MISO package</a> developed by Katz et. al. in 2010. They allow for the easy comparison of read depth, alternative splicing, and isoform structure between individual RNA-seq samples.</p>
+<p>SplicePlot produces modified sashimi plots for the visualization of sQTLs in a population. Rather than plotting data for each individual sample, SplicePlot groups the samples by genotype at a particular locus and then plots averages by genotype. This allows for the comparison of alternative splicing and isoform structure between groups within a population.</p>
+<p>The average read depths (average number of reads covering each base) and the average number of reads spanning each splice junction are then calculated for each group from the mapped reads. Average read depths, expressed in number of reads, are plotted and color coded based on genotype, which is labelled in the upper right corner. The reads spanning each junction are represented by arcs linking exonic regions, and each arc is labelled with the average number of reads spanning that particular junction. The thickness of each arc is proportional to the average number of reads spanning the particular junction. At the bottom of the plot, possible mRNAs are drawn, allowing for the easy comparison of isoform structure. The title of the plot corresponds to the particular locus being plotted.</p>
+</div>
+<div class="section" id="splicing-ratios">
+<h2>Splicing ratios<a class="headerlink" href="#splicing-ratios" title="Permalink to this headline">¶</a></h2>
+<p>Both the hive plot (<a class="reference internal" href="#hive-plots">Hive plots</a>) and structure plot (<a class="reference internal" href="#structure-plots">Structure plots</a>) rely on the splicing ratio, defined below. Intuitively, the splicing ratio is the ratio of reads spanning a particular splice junction to the total number of reads containing the same 5&#8217; splice site (or, alternatively, the same 3&#8217; splice site).</p>
+<div class="math">
+<p><img src="_images/math/bf013d409b33b1130598712fb35b3c3de6b41abb.png" alt="\textit{splicing ratio} = \frac{\textit{reads spanning junction}}{\textit{total number of reads sharing the same splice site}}"/></p>
+</div><p>The sum of all of the splicing ratios for a given 5&#8217; (or 3&#8217;) splice site should be 1. For example, for the transcript with two alternative isoforms illustrated below,</p>
+<div class="figure align-center">
+<img alt="_images/exons.png" src="_images/exons.png" />
+</div>
+<p>the splicing ratios would be</p>
+<div class="math">
+<p><img src="_images/math/453a31526e1d09c7ec4c25bc12199f8824f1facb.png" alt="\textrm{SR}_{E1-E2} &amp;= \frac{\textrm{reads spanning E1-E2}}{\textrm{reads spanning E1-E2} + \textrm{reads spanning E1-E3}}\\\\
+\textrm{SR}_{E1-E3} &amp;= \frac{\textrm{reads spanning E1-E3}}{\textrm{reads spanning E1-E2} + \textrm{reads spanning E1-E3}}"/></p>
+</div></div>
+<div class="section" id="hive-plots">
+<h2>Hive plots<a class="headerlink" href="#hive-plots" title="Permalink to this headline">¶</a></h2>
+<div class="figure align-center">
+<img alt="_images/hive2.png" src="_images/hive2.png" />
+</div>
+<p><a class="reference external" href="http://www.hiveplot.net/">Hive plots</a> provide an easy way to compare splicing ratios across a population. Each individual is represented as a set of connected arcs going around the plot, color coded by the individual&#8217;s genotype at a particular locus. On each of the radial axes, the splicing ratios for a particular splice junction are shown, and the distance from the center of the plot is proportional to the magnitude of the splicing ratio. Each axis is labelled with the name (chromosome and coordinates) of the splice junction.</p>
+</div>
+<div class="section" id="structure-plots">
+<h2>Structure plots<a class="headerlink" href="#structure-plots" title="Permalink to this headline">¶</a></h2>
+<div class="figure align-center">
+<img alt="_images/structure2.png" src="_images/structure2.png" />
+</div>
+<p>Structure plots are an alternate way of visualizing splicing ratios and comparing them across a population. Here, individuals are spatially grouped by their genotype at a particular locus. Splicing ratios for each individual are illustrated with vertically stacked bars, with the height of each bar representing the splicing ratio for a particular junction. The bars are color coded by junction.</p>
+</div>
+</div>
+<div class="section" id="running-spliceplot">
+<h1>Running SplicePlot<a class="headerlink" href="#running-spliceplot" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="from-raw-data">
+<h2>From raw data<a class="headerlink" href="#from-raw-data" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="input-files">
+<h3>Input files<a class="headerlink" href="#input-files" title="Permalink to this headline">¶</a></h3>
+<p>SplicePlot requires several text files as input:</p>
+<ol class="arabic">
+<li><p class="first">A .vcf file which has been sorted, bgzipped, and indexed using tabix. To prepare this from an original .vcf file called <em>sample.vcf</em>, first sort the .vcf file by position. This can be done using <tt class="docutils literal"><span class="pre">vcf-sort</span></tt> from <a class="reference external" href="http://vcftools.sourceforge.net/">VCFtools</a>. Then run the command <tt class="docutils literal"><span class="pre">bgzip</span> <span class="pre">sample.vcf</span></tt>, followed by the command <tt class="docutils literal"><span class="pre">tabix</span> <span class="pre">-p</span> <span class="pre">vcf</span> <span class="pre">sample.vcf.gz</span></tt> These commands will produce two files, <em>sample.vcf.gz</em>, which is the bgzipped version of <em>sample.vcf</em>, and <em>sample.vcf.gz.tbi</em>, which is the tabix index file for <em>sample.vcf</em>.</p>
+</li>
+<li><p class="first">A .gtf annotation file containing only exons which has been sorted by position, bgzipped, and then indexed using tabix. The .gtf file can be downloaded from online sources like <a class="reference external" href="http://genome.ucsc.edu/cgi-bin/hgTables?command=start">UCSC</a>, or created manually. To process a .gtf file into the format required by SplicePlot, run the command <tt class="docutils literal"><span class="pre">python</span> <span class="pre">prepare_annotation.py</span> <span class="pre">input.gtf</span> <span class="pre">output.gtf</span></tt> This command will produce a bgzipped file called <em>output.gtf.gz</em> and tabix index file called <em>output.gtf.gz.tbi</em>. The annotation file can also be filtered and sorted by the user using utilities like <tt class="docutils literal"><span class="pre">sort</span></tt> and <tt class="docutils literal"><span class="pre">awk</span></tt>, and then compressed and indexed using <tt class="docutils literal"><span class="pre">bgzip</span></tt> and <tt class="docutils literal"><span class="pre">tabix</span></tt>.</p>
+</li>
+<li><p class="first">.bam files containing the aligned RNA-seq data. These files should have been produced by a mapper that is capable of mapping reads spanning alternative splicing junctions, such as Tophat or STAR. The .bam files must be sorted by position, which can be accomplished using the command <tt class="docutils literal"><span class="pre">samtools</span> <span class="pre">sort</span> <span class="pre">in.bam</span> <span class="pre">out.bam</span></tt>, and indexed (must have corresponding .bai file in the same directory), which can be accomplished using the command <tt class="docutils literal"><span class="pre">samtools</span> <span class="pre">index</span> <span class="pre">alignment.bam</span></tt>.</p>
+</li>
+<li><p class="first">A mapping file which assigns the individual IDs from the .vcf to file paths for the .bam files.  The first column contains the individual ID from the .vcf file, and the second column contains the location of the .bam file corresponding to that individual. The columns are separated by some sort of whitespace, preferably tabs. An example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">Individual_ID</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">bam</span><span class="o">/</span><span class="nb">file</span><span class="o">.</span><span class="n">bam</span>
+<span class="n">Another_ID</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">other</span><span class="o">/</span><span class="n">bam</span><span class="o">/</span><span class="nb">file</span><span class="o">.</span><span class="n">bam</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Different databases may name their chromosomes differently. For example, chromosome 1 may be named <tt class="docutils literal"><span class="pre">chr1</span></tt> in one annotation and <tt class="docutils literal"><span class="pre">1</span></tt> in another. Try to keep the naming conventions consistent in your input files. When inputting genomic coordinates into SplicePlot, make sure to use names consistent with those in your input files, or you may get some unexpected errors.</p>
+</div>
+</div>
+<div class="section" id="drawing-the-plots">
+<h3>Drawing the plots<a class="headerlink" href="#drawing-the-plots" title="Permalink to this headline">¶</a></h3>
+<p>In order to run, SplicePlot must first extract and pickle the data relevant to a particular junction and SNP. After the data is extracted from the original files and pickled, the plotter loads the data and creates the images in .svg format.</p>
+<ol class="arabic simple">
+<li>Prepare the input files according to the specifications in <a class="reference internal" href="#input-files">Input files</a>.</li>
+<li>Extract the features and write them to a pickle file using the command similar to <tt class="docutils literal"><span class="pre">python</span> <span class="pre">initialize_data.py</span> <span class="pre">chr1:10583</span> <span class="pre">chr1:17055-17915,chr1:17055-17606,chr1:17055-17233</span> <span class="pre">--vcf</span> <span class="pre">vcf_file.vcf.gz</span> <span class="pre">--gtf</span> <span class="pre">gtf_file.gtf.gz</span> <span class="pre">--mf</span> <span class="pre">map_file.txt</span></tt> The first positional argument is the location of the SNP, in the format chromosome:position. The second positional argument provides the name of the junction being plotted, in the format chromosome:lower_splice_site-upper_splice_site,chromosome:lower_splice_site-upper_splice_site. The <tt class="docutils literal"><span class="pre">--vcf</span></tt> argument provides the location of the .vcf.gz file produced by <tt class="docutils literal"><span class="pre">bgzip</span></tt>, and the <tt class="docutils literal"><span class="pre">--gtf</span></tt> argument provides the location of the .gtf.gz file produced by <tt class="docutils literal"><span class="pre">prepare_annotation.py</span></tt>. The <tt class="docutils literal"><span class="pre">--mf</span></tt> argument provides the location of the mapping file. There is an optional argument <tt class="docutils literal"><span class="pre">--output</span></tt> which allows the user to specify the location and name of the resulting pickle file. By default, the pickle file is stored in the <em>pickle_files</em> directory within the <em>SplicePlot</em> directory, and is named according to the SNP location and the provided junction name.</li>
+<li>Draw the plots using a command similar to <tt class="docutils literal"><span class="pre">python</span> <span class="pre">plot.py</span> <span class="pre">pickle/file/location.p</span> <span class="pre">pickle</span> <span class="pre">settings_file</span></tt> The structure of the settings file is detailed below in <a class="reference internal" href="#creating-the-plot-settings-file">Creating the plot settings file</a>, and a sample settings file is located in the <em>SplicePlot</em> directory. By default, the plots are saved to the <em>plots</em> directory within <em>SplicePlot</em>. There is an optional <tt class="docutils literal"><span class="pre">--output</span></tt> argument which allows the output directory to be specified.</li>
+</ol>
+</div>
+<div class="section" id="finding-junctions-from-bam-files">
+<h3>Finding junctions from .BAM files<a class="headerlink" href="#finding-junctions-from-bam-files" title="Permalink to this headline">¶</a></h3>
+<p>SplicePlot can find and output possible alternative splicing junctions within a provided window.</p>
+<p>Run the command <tt class="docutils literal"><span class="pre">python</span> <span class="pre">junctions_from_window.py</span> <span class="pre">chr1:10000-chr1-20000</span> <span class="pre">map/file/path</span></tt>. The first positional argument is the window, in the format chromosome:lower_bound-upper_bound, and the second positional argument is the location of the mapping file. This mapping file has the same format as the mapping file provided to <tt class="docutils literal"><span class="pre">initialize_data.py</span></tt></p>
+<p>This script will find all alternative junctions present in any of the provided BAM files.</p>
+</div>
+</div>
+<div class="section" id="from-precalculated-splicing-ratios">
+<h2>From precalculated splicing ratios<a class="headerlink" href="#from-precalculated-splicing-ratios" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="formatting-the-table">
+<h3>Formatting the table<a class="headerlink" href="#formatting-the-table" title="Permalink to this headline">¶</a></h3>
+<p>The table has the following format:</p>
+<div class="highlight-python"><pre>indiv   genotype        CD46:207940540-207940952        CD46:207940540-207941124        CD46:207940540-207943666
+snia000367      GT      0.0147783251231527      0.574384236453202       0.410837438423645
+snia000398      TT      0.0195121951219512      0.808130081300813       0.172357723577236
+snia000650      TT      0.0335195530726257      0.815642458100559       0.150837988826816
+snia000899      GT      0.0153061224489796      0.512244897959184       0.472448979591837</pre>
+</div>
+<p>The columns are separated by tabs. Individual ID is placed in the first column, genotype in the second, and splicing ratios in the remaining columns.</p>
+</div>
+<div class="section" id="id1">
+<h3>Drawing the plots<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>Draw the plots using a command similar to <tt class="docutils literal"><span class="pre">python</span> <span class="pre">plot.py</span> <span class="pre">pickle/file/location/table</span> <span class="pre">table</span> <span class="pre">settings_file</span></tt>. The structure of the settings file is detailed below in <a class="reference internal" href="#creating-the-plot-settings-file">Creating the plot settings file</a>, and a sample settings file is located in the <em>SplicePlot</em> directory. By default, the plots are saved to the <em>plots</em> directory within <em>SplicePlot</em>. There is an optional <tt class="docutils literal"><span class="pre">--ouput</span></tt> argument which allows the output directory to be specified. Note that only hive plots and structure plots can be created from table.</p>
+</div>
+</div>
+<div class="section" id="creating-the-plot-settings-file">
+<h2>Creating the plot settings file<a class="headerlink" href="#creating-the-plot-settings-file" title="Permalink to this headline">¶</a></h2>
+<p>Plotting parameters such as dimensions and font sizes are passed to SplicePlot using a settings file. An example settings file is located in the <em>SplicePlot</em> directory and is shown below:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c">############ settings for drawing hive plot #################</span>
+<span class="p">[</span><span class="n">hive_plot</span><span class="p">]</span>
+
+<span class="c"># Whether or not a hive plot will be drawn</span>
+<span class="n">draw_hive_plot</span> <span class="o">=</span> <span class="bp">True</span>
+
+<span class="c"># size of the plot in inches</span>
+<span class="n">dimension</span> <span class="o">=</span> <span class="mi">8</span>
+
+<span class="c"># tick mark settings</span>
+<span class="c"># boolean determining whether tick marks are drawn</span>
+<span class="n">tick_marks</span> <span class="o">=</span> <span class="bp">True</span>
+
+<span class="c"># font size of the tick labels in inches. Set to 0 if you do not want tick labels</span>
+<span class="n">tick_label_font_size</span> <span class="o">=</span> <span class="mf">0.175</span>
+
+<span class="c"># distance of the tick labels from the axis in inches</span>
+<span class="n">tick_label_distance</span> <span class="o">=</span> <span class="mf">0.175</span>
+
+<span class="c"># height of each tick in inches</span>
+<span class="n">tick_height</span> <span class="o">=</span> <span class="mf">0.08</span>
+
+<span class="c"># thickness (weight) of each tick in inches</span>
+<span class="n">tick_thickness</span> <span class="o">=</span> <span class="mf">0.01</span>
+
+<span class="c"># axis settings</span>
+<span class="c"># start radius of axis in inches. Measured from the center of the plot</span>
+<span class="n">axis_start_radius</span> <span class="o">=</span> <span class="mf">0.3</span>
+
+
+<span class="c"># end radius of axis in inches. Measured from the center of the plot</span>
+<span class="n">axis_end_radius</span> <span class="o">=</span> <span class="mf">2.75</span>
+
+<span class="c"># string containing hexadecimal value for the axis color</span>
+<span class="n">axis_colors</span> <span class="o">=</span> <span class="s">&#39;#000000&#39;</span>
+
+
+<span class="c"># list containing the radii for each of the axis labels in inches, measured from center of the plot</span>
+<span class="n">axis_label_radius</span> <span class="o">=</span> <span class="p">[</span><span class="mf">3.25</span><span class="p">,</span><span class="mf">3.25</span><span class="p">,</span><span class="mf">3.25</span><span class="p">]</span>
+
+<span class="c"># determines the font size of the axis labels, in inches</span>
+<span class="n">axis_label_size</span> <span class="o">=</span> <span class="mf">0.2</span>
+
+<span class="c"># determines the thickness of the axes, in inches</span>
+<span class="n">axis_thickness</span> <span class="o">=</span> <span class="mf">0.05</span>
+
+<span class="c"># determines the size of the subdivisions of the axis for tick marks</span>
+<span class="n">axis_subdivision</span> <span class="o">=</span> <span class="mf">0.25</span>
+
+<span class="c"># list containing the angles of each axis, in degrees. 0 is 3 o&#39;clock</span>
+<span class="n">axis_angles</span> <span class="o">=</span> <span class="p">[</span><span class="mi">90</span><span class="p">,</span><span class="mi">210</span><span class="p">,</span><span class="mi">330</span><span class="p">]</span>
+
+<span class="c"># list containing lists which determine the lower and upper bounds for each axis</span>
+<span class="c"># set to [] if you do not want to use a custom scale</span>
+<span class="n">custom_scale</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]]</span>
+
+<span class="c"># bezier curve settings</span>
+<span class="c"># list containing hexadecimal strings for the colors of the bezier curves</span>
+<span class="n">bezier_colors</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;#FF8000&#39;</span><span class="p">,</span><span class="s">&#39;#00C866&#39;</span><span class="p">,</span><span class="s">&#39;#3399FF&#39;</span><span class="p">]</span>
+
+<span class="c"># determines the thickness of the beziers, in inches</span>
+<span class="n">bezier_thickness</span> <span class="o">=</span> <span class="mf">0.015</span>
+
+<span class="c"># key settings</span>
+<span class="c"># boolean determining whether a key should be drawn</span>
+<span class="n">include_key</span> <span class="o">=</span> <span class="bp">True</span>
+
+<span class="c"># determines the font size of the key title, in inches</span>
+<span class="n">key_title_size</span> <span class="o">=</span> <span class="o">.</span><span class="mi">25</span>
+
+<span class="c"># 2-element list containing the cartesian coordinates of the key, in inches. (0,0) is the center of the plot</span>
+<span class="n">key_position</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span>
+
+<span class="c"># determines the font size of the text in the key, in inches</span>
+<span class="n">key_font_size</span> <span class="o">=</span> <span class="o">.</span><span class="mi">2</span>
+
+<span class="c"># hexadecimal string determining the color of the font in the plot key</span>
+<span class="n">key_text_color</span> <span class="o">=</span> <span class="s">&#39;#000000&#39;</span>
+
+
+<span class="c">########### settings for structure plot ###################</span>
+<span class="p">[</span><span class="n">struct_plot</span><span class="p">]</span>
+
+<span class="c"># basic settings</span>
+<span class="n">draw_struct_plot</span> <span class="o">=</span> <span class="bp">True</span>
+
+<span class="c"># dimensions in inches</span>
+<span class="n">plot_width</span><span class="o">=</span><span class="mf">9.2</span>
+<span class="n">plot_height</span><span class="o">=</span><span class="mi">3</span>
+
+<span class="c"># amount of white space to leave on the left side, in inches</span>
+<span class="n">left_margin</span><span class="o">=</span><span class="mf">0.5</span>
+
+<span class="c"># amount of white space to leave on the right side of the plot in inches.</span>
+<span class="c"># Note that the key, if drawn, will be in this white space</span>
+<span class="n">right_margin</span><span class="o">=</span><span class="mf">3.45</span>
+
+<span class="c"># amount of white space to leave on the top, in inches</span>
+<span class="n">top_margin</span><span class="o">=</span><span class="mf">0.2</span>
+
+<span class="c"># amount of white space to leave on the bottom, in inches</span>
+<span class="n">bottom_margin</span><span class="o">=</span><span class="mi">1</span>
+
+<span class="c"># colors for each junction. Must have as many colors as there are junctions in the data</span>
+<span class="n">colors</span><span class="o">=</span><span class="p">[</span><span class="s">&quot;#CC0011&quot;</span><span class="p">,</span><span class="s">&quot;#FF8800&quot;</span><span class="p">,</span><span class="s">&quot;#FFCC33&quot;</span><span class="p">]</span>
+
+<span class="c"># color for the axis</span>
+<span class="n">axis_color</span><span class="o">=</span><span class="s">&#39;#000000&#39;</span>
+
+<span class="c"># thickness for the axes, in inches</span>
+<span class="n">axis_thickness</span><span class="o">=</span><span class="mf">0.02</span>
+
+<span class="c"># length of each tick mark in inches. Set to 0 if you do not want tick marks</span>
+<span class="n">tick_length</span><span class="o">=</span><span class="mf">0.1</span>
+
+<span class="c"># size of the labels for the horizontal (x) axis in inches. Set to 0 if you do not want labels</span>
+<span class="n">horiz_label_size</span><span class="o">=</span><span class="mf">0.20</span>
+
+<span class="c"># distance that horizontal axis labels are below the x axis, in inches</span>
+<span class="n">horiz_label_spacing</span><span class="o">=</span><span class="mf">0.25</span>
+
+<span class="c"># font size for horizontal axis title in inches. Set to 0 if you do not want horizontal axis title</span>
+<span class="n">horiz_axis_title_size</span><span class="o">=</span><span class="mf">0.27</span>
+
+<span class="c"># distance that horizontal axis title is below the x axis, in inches</span>
+<span class="n">horiz_axis_title_spacing</span><span class="o">=</span><span class="mf">0.50</span>
+
+<span class="c"># determines whether or not tick marks are drawn for the vertical (y) axis</span>
+<span class="n">use_vertical_ticks</span><span class="o">=</span><span class="bp">True</span>
+
+<span class="c"># spacing between tick marks on the vertical axis. must be between 0 and 1</span>
+<span class="n">vertical_tick_spacing</span><span class="o">=</span><span class="mf">0.25</span>
+
+<span class="c"># font size for vertical axis labels, in inches. Set to 0 if you do not want labels</span>
+<span class="n">vert_label_size</span><span class="o">=</span><span class="mf">0.20</span>
+
+<span class="c"># distance that vertical axis labels are drawn away from the vertical axis in inches</span>
+<span class="n">vert_label_spacing</span><span class="o">=</span><span class="mf">0.25</span>
+
+
+<span class="c"># settings for structure plot key</span>
+<span class="n">include_key</span> <span class="o">=</span> <span class="bp">True</span>
+
+<span class="c"># determines the font size of the key title. Use 0 if you do not want title</span>
+<span class="n">key_title_size</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="c"># 2-element list containing the cartesian coordinates of the key in inches. (0,0) is the bottom left corner of the plot</span>
+<span class="n">key_position</span> <span class="o">=</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span><span class="mf">2.25</span><span class="p">]</span>
+
+<span class="c"># list containing the labels for each color in the key. Set to None if you want to use the default labels</span>
+<span class="n">key_labels</span> <span class="o">=</span> <span class="bp">None</span>
+
+<span class="c"># determines the font size of the text in the key, in inches</span>
+<span class="n">key_font_size</span> <span class="o">=</span> <span class="mf">0.2</span>
+
+<span class="c"># hexadecimal string for the color of the font in the plot key</span>
+<span class="n">key_text_color</span> <span class="o">=</span> <span class="s">&#39;#000000&#39;</span>
+
+<span class="c">######### settings for sashimi plot ##############</span>
+<span class="p">[</span><span class="n">sashimi_plot</span><span class="p">]</span>
+
+<span class="n">draw_sashimi_plot</span> <span class="o">=</span> <span class="bp">True</span>
+
+<span class="c"># width of the sashimi plot, in inches</span>
+<span class="n">width</span> <span class="o">=</span> <span class="mi">4</span>
+
+<span class="c"># height of the sashimi plot, in inches</span>
+<span class="n">height</span> <span class="o">=</span> <span class="mf">2.5</span>
+
+<span class="c"># title. None means no title, &#39;&#39; means use default title, &#39;asdf&#39; means title is &#39;asdf&#39;, etc</span>
+<span class="n">plot_title</span> <span class="o">=</span> <span class="bp">None</span>
+
+<span class="c"># scaling factor for intronic regions. A larger intron_scale makes the intronic regions smaller</span>
+<span class="n">intron_scale</span> <span class="o">=</span> <span class="mi">15</span>
+
+<span class="c"># scaling factor for exonic regions. A larger exon_scale makes the exonic regions smaller</span>
+<span class="n">exon_scale</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="c"># colors for the different pileups, in hex</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;#FF8000&#39;</span><span class="p">,</span><span class="s">&#39;#00C866&#39;</span><span class="p">,</span><span class="s">&#39;#3399FF&#39;</span><span class="p">]</span>
+
+<span class="c"># maximum value on the y-scale</span>
+<span class="n">ymax</span> <span class="o">=</span> <span class="mi">1800</span>
+
+<span class="c"># determines whether the average junction-spanning read counts are shown</span>
+<span class="n">number_junctions</span><span class="o">=</span><span class="bp">True</span>
+
+<span class="c"># determine the font size of the numbering for the junction-spanning reads</span>
+<span class="n">numbering_font_size</span> <span class="o">=</span> <span class="mi">6</span>
+
+<span class="n">resolution</span><span class="o">=</span><span class="mf">0.5</span>
+
+<span class="c"># determines the thickness of the junction-spanning beziers</span>
+<span class="n">junction_log_base</span> <span class="o">=</span> <span class="mi">10</span>
+
+<span class="c"># determines whether to reverse the plot if features are on the - strand</span>
+<span class="n">reverse_minus</span> <span class="o">=</span> <span class="bp">False</span>
+
+<span class="n">font_size</span> <span class="o">=</span> <span class="mi">6</span>
+
+<span class="c"># number of ticks on the y-axis</span>
+<span class="n">nyticks</span> <span class="o">=</span> <span class="mi">2</span>
+
+<span class="c"># number of ticks on the x-axis</span>
+<span class="n">nxticks</span> <span class="o">=</span> <span class="mi">4</span>
+
+<span class="c"># determines whether y-axis labels are drawn</span>
+<span class="n">show_ylabel</span> <span class="o">=</span> <span class="bp">True</span>
+
+<span class="c"># determines whether x-axis labels are drawn</span>
+<span class="n">show_xlabel</span> <span class="o">=</span> <span class="bp">True</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="common-errors">
+<h1>Common Errors<a class="headerlink" href="#common-errors" title="Permalink to this headline">¶</a></h1>
+<ol class="arabic">
+<li><p class="first"><strong>``initialize_data.py`` fails to run.</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>Check to make sure that your argument for the variant position is correct, and that there is indeed a SNP in the .vcf file at that position. Also, make sure that the chromosome has been named correctly in your argument for the variant position (i.e. the chromosome name matches the name in the .vcf file).</li>
+<li>Check to make sure that your argument for the junction name is correct. Make sure that the chromosome names in your argument for the junction match the names for the chromosome in the .gtf file.</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>``initialize_data.py`` fails, with an error &#8220;X is not a valid splice site&#8221;</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>Splice sites provided to <tt class="docutils literal"><span class="pre">initialize_data.py</span></tt> must have either a common donor or common acceptor.</li>
+</ul>
+</div></blockquote>
+</li>
+</ol>
+</div>
+<div class="section" id="references">
+<h1>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h1>
+<ol class="arabic simple">
+<li>Hubisz, M. J., Falush, D., Stephens, M. &amp; Pritchard, J. K. Inferring weak population structure with the assistance of sample group information. Molecular Ecology Resources 9, 1322–1332 (2009).</li>
+<li>Katz, Y., Wang, E. T., Airoldi, E. M. &amp; Burge, C. B. Analysis and design of RNA sequencing experiments for identifying isoform regulation. Nature Methods 7, 1009–1015 (2010).</li>
+<li>Katz, Y. et al. Sashimi plots: Quantitative visualization of RNA sequencing read alignments. arXiv preprint arXiv:1306.3466 (2013). at <a class="reference external" href="http://arxiv.org/abs/1306.3466">&lt;http://arxiv.org/abs/1306.3466&gt;</a></li>
+<li>Krzywinski, M., Birol, I., Jones, S. J. &amp; Marra, M. A. Hive plots&#8211;rational approach to visualizing networks. Briefings in Bioinformatics 13, 627–644 (2011).</li>
+</ol>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">SplicePlot: a tool for visualizing alternative splicing</a></li>
+<li><a class="reference internal" href="#updates">Updates</a></li>
+<li><a class="reference internal" href="#dependencies">Dependencies</a></li>
+<li><a class="reference internal" href="#source-code">Source Code</a></li>
+<li><a class="reference internal" href="#installation">Installation</a></li>
+<li><a class="reference internal" href="#virtualbox-virtual-machine-instructions">VirtualBox Virtual Machine Instructions</a></li>
+<li><a class="reference internal" href="#testing-spliceplot">Testing SplicePlot</a></li>
+<li><a class="reference internal" href="#overview">Overview</a><ul>
+<li><a class="reference internal" href="#sashimi-plots">Sashimi plots</a></li>
+<li><a class="reference internal" href="#splicing-ratios">Splicing ratios</a></li>
+<li><a class="reference internal" href="#hive-plots">Hive plots</a></li>
+<li><a class="reference internal" href="#structure-plots">Structure plots</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#running-spliceplot">Running SplicePlot</a><ul>
+<li><a class="reference internal" href="#from-raw-data">From raw data</a><ul>
+<li><a class="reference internal" href="#input-files">Input files</a></li>
+<li><a class="reference internal" href="#drawing-the-plots">Drawing the plots</a></li>
+<li><a class="reference internal" href="#finding-junctions-from-bam-files">Finding junctions from .BAM files</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#from-precalculated-splicing-ratios">From precalculated splicing ratios</a><ul>
+<li><a class="reference internal" href="#formatting-the-table">Formatting the table</a></li>
+<li><a class="reference internal" href="#id1">Drawing the plots</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#creating-the-plot-settings-file">Creating the plot settings file</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#common-errors">Common Errors</a></li>
+<li><a class="reference internal" href="#references">References</a></li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/index.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li><a href="#">splice_plot 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Eric Wu.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>
