@@ -1,4 +1,4 @@
-splice_plot
+SplicePlot
 =========
 
 hive plot, structure plot, and sashmi plot drawing tool for alternative splicing visualization
