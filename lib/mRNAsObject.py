@@ -27,8 +27,11 @@ class mRNAsObject:
                 exon_starts.append(exon_coordinate_list[0])
                 exon_ends.append(exon_coordinate_list[1])
 
-        self.exon_starts = sorted(list(set(exon_starts)))
-        self.exon_ends = sorted(list(set(exon_ends)))
+        self.exon_starts = sorted(exon_starts)
+        self.exon_ends = sorted(exon_ends)
+
+        #self.exon_starts = sorted(list(set(exon_starts)))
+        #self.exon_ends = sorted(list(set(exon_ends)))
 
     def __str__(self):
         return '{0}:{1}-{2}{3},{4}'.format(self.chrm,self.low,self.high,self.strand,self.mRNAs)

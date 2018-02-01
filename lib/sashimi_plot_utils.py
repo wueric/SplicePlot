@@ -324,7 +324,6 @@ def getScaling(tx_start, tx_end, strand, exon_starts, exon_ends,
     """
     Compute the scaling factor across various genic regions.
     """
-   
     exoncoords = zeros((tx_end - tx_start + 1))
     for i in range(len(exon_starts)):
         exoncoords[exon_starts[i] - tx_start : exon_ends[i] - tx_start] = 1
