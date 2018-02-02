@@ -80,7 +80,7 @@ class ReadDepth:
         '''
             is_invalid determines whether any of the attributes are None
         '''
-        return self.chrm == None or self.low == None or self.high == None or self.wiggle == None or self.junctions_dict == None
+        return self.chrm is None or self.low is None or self.high is None or self.wiggle is None or self.junctions_dict is None
         
     def shrink(self,new_low,new_high):
 
